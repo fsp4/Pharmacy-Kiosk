@@ -28,43 +28,91 @@
 	}
 	
 	function next() {
-        var httpRequest;
- 
-        if (window.XMLHttpRequest) { // Mozilla, Safari, ...
-            httpRequest = new XMLHttpRequest();
-            if (httpRequest.overrideMimeType) {
-                httpRequest.overrideMimeType('text/xml');
-            }
-        }
-        else if (window.ActiveXObject) { // IE
-            try {
-                httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
-                }
-            catch (e) {
-                try {
-                    httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                catch (e) {}
-            }
-        }
-        if (!httpRequest) {
-            alert('Cannot create an XMLHTTP instance');
-            return false;
-        }
- 
-        var type = 2; 
+		var httpRequest;
+
+		if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+			httpRequest = new XMLHttpRequest();
+			if (httpRequest.overrideMimeType) {
+				httpRequest.overrideMimeType('text/xml');
+			}
+		}
+		else if (window.ActiveXObject) { // IE
+			try {
+				httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+			}
+			catch (e) {
+				try {
+					httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				catch (e) {}
+			}
+		}
+		if (!httpRequest) {
+			alert('Cannot create an XMLHTTP instance');
+		}
+
+		var type = 2; 
 		var T = document.getElementById("theTable");
 		var id = T.rows[1].id;
 		console.log(id);
+		var item = removeRowFromList(id);
+		displayData(item);
 		T.deleteRow(1);
+
+		var data = 'type=' + type + '&id=' + id;
 		
-        var data = 'type=' + type + '&id=' + id;
-
-        httpRequest.open('POST', 'back_end_php.php', true);
-        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-        httpRequest.onreadystatechange = function() {} ;
-        httpRequest.send(data);
+		// comment this out to disable database connection for easier testing
+		httpRequest.open('POST', 'back_end_php.php', true);
+		httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		httpRequest.onreadystatechange = function() { displayData(); } ;
+		httpRequest.send(data);
+		//
+	}
+	
+	function displayData(item) {
+		var table = document.getElementById("displayTable");
+		
+		var id = item.id;
+		var first_name = item.first_name;
+		var last_name = item.last_name;
+		var date_of_birth = item.date_of_birth;
+		var relation = item.relation;
+		var returning_customer = item.returning_customer;
+		var insurance_card_number = item.insurance_card_number;
+		
+		// returning customer checkbox
+		var tr = document.createElement("tr");
+		var label = document.createElement("label");
+		label.innerHTML = "Returning Customer: ";
+		
+		var checkbox = document.createElement("input");
+		checkbox.type = "checkbox";
+		checkbox.name = "returningcustomer";
+		if (returning_customer.localeCompare("yes")) {
+			checkbox.checked = true;
+		}
+		checkbox.disabled = true;
+		label.appendChild(checkbox);
+		tr.appendChild(label);
+		
+		table.appendChild(tr);
+		////
+		
+		// first name field
+		var tr = document.createElement("tr");
+		var label = document.createElement("label");
+		label.innerHTML = "First Name: ";
+		
+		var firstname = document.createElement("input");
+		firstname.type = "text";
+		firstname.name = "firstname";
+		firstname.value = first_name;
+		firstname.disabled = true;
+		label.appendChild(firstname);
+		tr.appendChild(label);
+		
+		table.appendChild(tr);
+		////
 	}
 	
 	function updateRows(httpRequest) {
@@ -73,8 +121,6 @@
 				var data = httpRequest.responseText;
 				var newData = JSON.parse(data);
 				var rettype = newData.Type;
-				//alert(newData.num);
-				//alert(newData.if);
 				if (rettype == "Update") {
 					queueCount = 0;
 					var newRows = newData.Contents;
@@ -107,9 +153,21 @@
 		theQueue[queueCount] = currItem;
 		queueCount++;
 	}
+	
+	function removeRowFromList(id) {
+		var ret = 0;
+		for (var i = 0; i < theQueue.length; i++) {
+			if (theQueue[i].id == id) {
+				ret = theQueue[i];
+				theQueue.splice(i, 1);
+				break;
+			}
+		}
+		queueCount--;
+		return ret;
+	}
 
 	function showQueueTable() {
-		//theQueue.sort(by_name);
 		var T = document.getElementById("theTable");
 		var tParent = T.parentNode;
 
@@ -220,7 +278,6 @@
         }
         if (!httpRequest) {
             alert('Cannot create an XMLHTTP instance');
-            return false;
         }
  
         var type = 1; 
@@ -241,9 +298,17 @@
 </script>
 </head>
 <body onload = "Start()">
+<table border = "1">
+<td>
 <table id = "theTable" border = "1" class="thetable">
 </table>
 <br>
 <input type="button" onclick="next()" value="Next">
+</td>
+<td id="display">
+<table id = "displayTable">
+</table>
+</td>
+</table>
 </body>
 </html>

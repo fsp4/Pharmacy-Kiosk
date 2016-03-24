@@ -16,7 +16,6 @@
 		if ($client_rows != $database_rows) {
 			$Adata["Type"] = "Update";
 			$contents = Array();
-			$Adata["if"] = "yes";
 			for ($i = 0; $i < $database_rows; $i++) {
 				$rr->data_seek($i);
 				$curr = $rr->fetch_array();
@@ -36,7 +35,6 @@
 		else {
 			$Adata["Type"] = "NA";
 			$Adata["Contents"] = "OK";
-			$Adata["if"] = "no";
 		}
 		
 		$returndata = json_encode($Adata);
@@ -44,7 +42,6 @@
 	}
 	else {
 		$id = strip_tags($_POST["id"]);
-		
 		$rr = $db->query("DELETE FROM queue WHERE id='$id'");
 	}
 ?>
