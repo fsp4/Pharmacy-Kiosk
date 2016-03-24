@@ -62,10 +62,10 @@
 		var data = 'type=' + type + '&id=' + id;
 		
 		// comment this out to disable database connection for easier testing
-		httpRequest.open('POST', 'back_end_php.php', true);
-		httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		httpRequest.onreadystatechange = function() { displayData(); } ;
-		httpRequest.send(data);
+		//httpRequest.open('POST', 'back_end_php.php', true);
+		//httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		//httpRequest.onreadystatechange = function() { displayData(); } ;
+		//httpRequest.send(data);
 		//
 	}
 	
