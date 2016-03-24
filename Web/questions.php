@@ -19,6 +19,31 @@
       			heightStyle: "content"
     		});
   		});
+
+  // 		var xhttp = new XMLHttpRequest();
+		// xhttp.onreadystatechange = function() {
+		//     if (xhttp.readyState == 4 && xhttp.status == 200) {
+		//         window.onload = function () {
+		//         	parseXML(xhttp);
+		//         }
+		//     }
+		// };
+		// xhttp.open("GET", "faq.xml", true);
+		// xhttp.send();
+	
+		// function parseFAQ(xml) {
+		//     var x, i, xmlDoc, txt;
+		//     xmlDoc = xml.responseXML;
+		//     txt = "";
+		//     x = xmlDoc.getElementsByTagName('Question');
+		//     y = xmlDoc.getElementsByTagName('Answer')
+		//     //assume: lengths of x and y SHOULD logically be equivalent for question and answer format.
+		//     for (i = 0 ; i <x.length; i++) {
+  //       		txt += "<b>dicks" + x[i].childNodes[0].nodeValue + "<br></b>"
+  //       				+ y[i].childNodes[0].nodeValue + "<br>";
+		//     }
+		//     //document.getElementById("faq").innerHTML = txt;
+		// }
 	</script>
 </head>
 
@@ -78,7 +103,40 @@
 		
 		<h3> Questions </h3>
 		<div>
-			<p></p>
+			<p id = "faq"></p>
+			<script>
+
+				var xhttp = new XMLHttpRequest();
+				xhttp.open("GET", "faq.xml", true);
+				xhttp.onreadystatechange = function() {
+				    if (xhttp.readyState == 4) {
+				    	if (xhttp.status == 200 || xhttp.status == 0) {
+				        	parseFAQ(xhttp);
+						}
+				    }
+				    // else {
+				    // 	document.getElementById("faq").innerHTML = xhttp.responseXML;
+				    // }
+				};
+				xhttp.send(null);
+
+				//xhttp.open("GET", "faq.xml", true);
+				//xhttp.send(null);
+				
+				function parseFAQ(xml) {
+				    var x, i, xmlDoc, txt;
+				    xmlDoc = xml.responseXML;
+				    txt = "";
+				    x = xmlDoc.getElementsByTagName('Question');
+				    y = xmlDoc.getElementsByTagName('Answer')
+				    //assume: lengths of x and y SHOULD logically be equivalent for question and answer format.
+				    for (i = 0 ; i <x.length; i++) {
+		        		txt += "<b>" + x[i].childNodes[0].nodeValue + "<br></b>"
+		        				+ y[i].childNodes[0].nodeValue + "<br>";
+				    }
+				    document.getElementById("faq").innerHTML = txt;
+				}
+			</script>
 		</div>	
 	</div>
 </body>
