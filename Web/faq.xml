@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data-set xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<qa>
+		<Question>q1</Question>
+		<Answer>a1</Answer>
+	</qa>
+	<qa>
+		<Question>q2</Question>
+		<Answer>a2</Answer>
+	</qa>
+	<qa>
+		<Question>q3</Question>
+		<Answer>a3</Answer>
+	</qa>
+	<qa>
+		<Question>q4</Question>
+		<Answer>a4</Answer>
+	</qa>
+	<qa>
+		<Question>q5</Question>
+		<Answer>a5</Answer>
+	</qa>
+</data-set>
