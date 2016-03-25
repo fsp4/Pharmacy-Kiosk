@@ -106,22 +106,23 @@
 			<p id = "faq"></p>
 			<script>
 
+				//Script currently assumes xml file as stored on server, and this file on server can be manipulated by the pharmacy.
+
 				var xhttp = new XMLHttpRequest();
-				xhttp.open("GET", "faq.xml", true);
+				// xhttp.open("GET", "faq.xml", true);
 				xhttp.onreadystatechange = function() {
 				    if (xhttp.readyState == 4) {
 				    	if (xhttp.status == 200 || xhttp.status == 0) {
 				        	parseFAQ(xhttp);
 						}
 				    }
-				    // else {
+				    // else { // debug
 				    // 	document.getElementById("faq").innerHTML = xhttp.responseXML;
 				    // }
 				};
-				xhttp.send(null);
-
-				//xhttp.open("GET", "faq.xml", true);
-				//xhttp.send(null);
+				xhttp.open("GET", "faq.xml", true); //faq.xml currently locally stored, but the file needs to be on a server to be accessed via JavaScript.
+				xhttp.send();
+				
 				
 				function parseFAQ(xml) {
 				    var x, i, xmlDoc, txt;
