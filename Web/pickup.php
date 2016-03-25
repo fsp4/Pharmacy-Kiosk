@@ -10,6 +10,12 @@
 		function goBack() {
    			window.history.back();
 		}
+
+		//only disabling date of birth. assume names still needed.
+		function disableFields(cb) {
+			document.getElementById("dob").disabled = cb.checked ? true : false;
+		}
+
 	</script>
 </head>
 <body>
@@ -22,7 +28,7 @@
 			<fieldset style="background-color: 	#e6dbbe; mid-height:100px; border-radius: 25px;">
 				<div class="pure-control-group" style="font-family: Palatino Linotype;">
 					<label for="cb" class="pure-checkbox" style="width:270px">
-						<input id="cb" type="checkbox" name="returningcustomer"> 
+						<input id="cb" onchange = "disableFields(this)" type="checkbox" name="returningcustomer" > 
 						<span class="checkboxtext">
 							Returning Customer to this store
 						</span>
