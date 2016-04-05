@@ -19,45 +19,5 @@
 	<footer>
 		<p>Copyright &copy; 2016</p>
 	</footer>
-	
-	<script>
-		function removeBox() {
-			var box = document.getElementById("box");
-			while (box.firstChild) {
-				box.removeChild(box.firstChild);
-			}
-		}
-
-		function goBack() {
-			// pickup button
-			removeBox();
-			document.title = "Drop Off";
-			var box = document.getElementById("box");
-			var tr = document.createElement("tr");
-	
-			var pickup = document.createElement("input");
-			pickup.className = "btn";
-			pickup.type = "button";
-			pickup.onclick = PickUp;
-			pickup.value = "Pick Up";
-			var dropoff = document.createElement("input");
-			dropoff.className = "btn";
-			dropoff.type = "button";
-			dropoff.onclick = DropOff;
-			dropoff.value = "Drop Off";
-			var questions = document.createElement("input");
-			questions.className = "btn";
-			questions.type = "button";
-			questions.onclick = Questions;
-			questions.value = "Questions";
-	
-			tr.appendChild(pickup);
-			tr.appendChild(dropoff);
-			tr.appendChild(questions);
-			////
-	
-			box.appendChild(tr);
-		}
-	</script>
 </body>
 </html>
