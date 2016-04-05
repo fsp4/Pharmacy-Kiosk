@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Thank You!</title>
-	<link rel="stylesheet" type="text/css" href="menu.css"/>
-</head>
-
-<body>
 <?php
 	$type = $_POST["type"];
 	
@@ -17,7 +9,7 @@
 		}
 		$firstname = strip_tags(stripslashes($_POST["firstname"]));
 		$lastname = strip_tags(stripslashes($_POST["lastname"]));
-		$DOB = strip_tags(stripslashes($_POST["DOB"]));
+		$DOB = array_key_exists('DOB', $_POST) ? strip_tags(stripslashes($_POST["DOB"])) : null;
 		
 		// add form input to database
 		// should do something to make the password more secure here...
@@ -38,8 +30,8 @@
 			$returning = "yes";
 		}
 		$relationship = strip_tags(stripslashes($_POST["relationship"]));
-		$insurance_number = strip_tags(stripslashes($_POST["insurance"]));
-		$DOB = strip_tags(stripslashes($_POST["DOB"]));
+		$insurance_number = array_key_exists('insurance', $_POST) ? strip_tags(stripslashes($_POST["insurance"])) : 0;
+		$DOB = array_key_exists('DOB', $_POST) ? strip_tags(stripslashes($_POST["DOB"])) : null;
 		
 		// add form input to database
 		// should do something to make the password more secure here...
@@ -47,6 +39,7 @@
 		if ($db->connect_error):
 		   die ("Could not connect to db " . $db->connect_error);
 		endif;
+		echo "$relationship  +  $insurance_number  +  $DOB";
 		$query = "INSERT INTO queue VALUES (null, '$type', '', '', '$DOB', '$relationship', '$returning', $insurance_number)";
 		$db->query($query);
 		
@@ -57,5 +50,3 @@
 		echo "error";
 	}
 ?>
-</body>
-</html>
