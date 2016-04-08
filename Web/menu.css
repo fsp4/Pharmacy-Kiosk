@@ -138,4 +138,5 @@ footer p {
 .btnTypeTwo:hover {
   background: #cdb77c;
   text-decoration: none;
+  outline:0;
 }

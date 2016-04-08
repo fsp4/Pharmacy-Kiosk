@@ -1,6 +1,11 @@
 <?php
 	$type = $_POST["type"];
 	
+	$db = new mysqli('localhost', 'root', '', 'kiosk_queue');
+	if ($db->connect_error) {
+		die ("Could not connect to db " . $db->connect_error);
+	}
+	
 	if (strcmp($type, "pickup") == 0) {
 		// get form input
 		$returning = "no";
@@ -12,16 +17,8 @@
 		$DOB = array_key_exists('DOB', $_POST) ? strip_tags(stripslashes($_POST["DOB"])) : null;
 		
 		// add form input to database
-		// should do something to make the password more secure here...
-		$db = new mysqli('localhost', 'root', '', 'kiosk_queue');
-		if ($db->connect_error):
-		   die ("Could not connect to db " . $db->connect_error);
-		endif;
 		$query = "INSERT INTO queue VALUES (null, '$type', '$firstname', '$lastname', '$DOB', '', '$returning', '')";
 		$db->query($query);
-		
-		// return main page
-		include("main_menu.html");
 	}
 	else if (strcmp($type, "dropoff") == 0) {
 		// get form input
@@ -34,19 +31,17 @@
 		$DOB = array_key_exists('DOB', $_POST) ? strip_tags(stripslashes($_POST["DOB"])) : null;
 		
 		// add form input to database
-		// should do something to make the password more secure here...
-		$db = new mysqli('localhost', 'root', '', 'kiosk_queue');
-		if ($db->connect_error):
-		   die ("Could not connect to db " . $db->connect_error);
-		endif;
-		echo "$relationship  +  $insurance_number  +  $DOB";
 		$query = "INSERT INTO queue VALUES (null, '$type', '', '', '$DOB', '$relationship', '$returning', $insurance_number)";
 		$db->query($query);
-		
-		// return main page
-		include("main_menu.html");
 	}
 	else {
 		echo "error";
 	}
+	
+	// set session variable to show queue number
+	$rr = $db->query("SELECT * FROM queue");
+	$database_rows = $rr->num_rows;
+	$_SESSION["num"] = $database_rows;
+	
+	include("thankyou.php");
 ?>
