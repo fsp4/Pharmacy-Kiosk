@@ -9,7 +9,7 @@
 <?php
 	$type = $_POST["type"];
 	// type: pickup, returningdropoff, newdropoff, talk, 
-	// queue: ID, type, refill, first_name, last_name, middle_initial, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, realation, returning_customer, insurance_card_number, allergies, talk 
+	// queue: ID, type, refill, first_name, last_name, middle_initial, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, realation, returning_customer, insurance_card_number, allergies
 	
 	if (strcmp($type, "pickup") == 0) {
 		// get form input
@@ -27,8 +27,8 @@
 		if ($db->connect_error):
 		   die ("Could not connect to db " . $db->connect_error);
 		endif;
-		// queue: ID, type, refill, first_name, last_name, middle_initial, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, talk 
-		$query = "INSERT INTO queue VALUES (null, '$type', '', '$firstname', '$lastname', '', '$DOB', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '$returning', '', '', '')";
+		// queue: ID, type, refill, first_name, last_name, middle_initial, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies
+		$query = "INSERT INTO queue VALUES (null, '$type', '', '$firstname', '$lastname', '', '$DOB', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '$returning', '', '')";
 		$db->query($query);
 	}
 	else if (strcmp($type, "returningdropoff") == 0) {
@@ -49,7 +49,7 @@
 		if ($db->connect_error):
 		   die ("Could not connect to db " . $db->connect_error);
 		endif;
-		$query = "INSERT INTO queue VALUES (null, '$type', '', '$firstname', '$lastname', '', '$DOB', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '$returning', '', '$allergies', '')";
+		$query = "INSERT INTO queue VALUES (null, '$type', '', '$firstname', '$lastname', '', '$DOB', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '$returning', '', '$allergies')";
 		$db->query($query);
 	}
 	else if (strcmp($type, "newdropoff") == 0) {
@@ -111,15 +111,13 @@
 		   die ("Could not connect to db " . $db->connect_error);
 		endif;
 		
-		$query = "INSERT INTO queue VALUES (null, '$type', '$refill', '$firstname', '$lastname', '$middle', '$DOB', '$gender', '$position', '$home', '$city', '$state', '$zip', '$phone', '$phone_type', '$notifications', '$allergies_list', '$current_meds', '$signature', '$date', '', '', '', '', '')";
+		$query = "INSERT INTO queue VALUES (null, '$type', '$refill', '$firstname', '$lastname', '$middle', '$DOB', '$gender', '$position', '$home', '$city', '$state', '$zip', '$phone', '$phone_type', '$notifications', '$allergies_list', '$current_meds', '$signature', '$date', '', '', '', '')";
 		$db->query($query);
 	}
 	else if (strcmp($type, "talk") == 0) {
 		// get form input
 		$firstname = strip_tags(stripslashes($_POST["firstname"]));
 		$lastname = strip_tags(stripslashes($_POST["lastname"]));
-		$talk = "1";
-		$allergies = "0";
 
 		// add form input to database
 		// should do something to make the password more secure here...
@@ -127,7 +125,7 @@
 		if ($db->connect_error):
 		   die ("Could not connect to db " . $db->connect_error);
 		endif;
-		$query = "INSERT INTO queue VALUES (null, '$type', '$firstname', '$lastname', '', '', '', '', '$allergies', '$talk')";
+		$query = "INSERT INTO queue VALUES (null, '$type', '', '$firstname', '$lastname', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')";
 		$db->query($query);
 	}
 	else {
