@@ -4,87 +4,96 @@ html {
     -ms-text-size-adjust: 100%;
     height: 100%;
 }
+
 body {
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
-    height:100%;
-    width:100%;
-    margin: 0;
-    text-align:center;
-}
-
-.legend {
-	padding-left: 100px;
-	padding-right: 100px;
-	border: 1px;
-	font: 140%
-	font: #1c2856;
-}
-
-
-
-fieldset {
-	width:100%
-}
-
-label {
- 	min-width: 100px;
-}
-
-
-
-.img { 
-    width:30%;
     margin: auto;
+    text-align:center;
+    height: 100%;
 }
 
- 
+p {
+	font-family: Palatino Linotype;
+    font-size: 16px;
+}
+
+img {
+	width:100%;
+}
+
 div {
-	text-align: left;
+	margin: auto; 
 	height: 100%;
 }
 
-#box {       
-        margin: auto;
-        height:350px;        
-        width: 500px;
-        text-align:left;
+fieldset {
+	width:100%;
+	background-color: #e6dbbe;
+	font-family: Palatino Linotype;
+	border-radius: 25px;
+}
+
+.pure-control-group{
+	font-family: Palatino Linotype;
+}
+
+#checkbox{
+	display: inline;
 }
 
 div legend {
 	color: #1c2856;
 	font-size:140%;
 	font-family: Palatino Linotype;
-}  
+} 
 
-.container .content { 
-	display: none;
-	padding: 5px;
-}   
-    
-#section {
-	text-align: center;
-	width: 100%;
+div p {
+	margin: 8px;
 }
 
-
-header {
-    background: #fff;
-    background: rgba(255,255,255,0.9);
+ul {
+	list-style-type:none;
 }
+
+#id {
+	font-family: Palatino Linotype;
+}
+
+#id p {
+	margin:auto;
+}
+
+#address {
+	white-space: nowrap;
+}
+
+#thanks{
+	font-family: Palatino Linotype;
+	color: #1c2856;
+	font-size: 200%;
+}
+
+#accordion {
+	font-family: Palatino Linotype;
+	width: 80%;
+	height: auto;
+	margin:auto;
+	text-align: left;
+}
+
+#box {       
+	display: inline-block;
+}
+
 
 header p {
 	text-align: center;
     margin: 0;
     padding: 20px 0;
     padding-bottom: 85px;
-}
-
-footer {
-    background: #fff;
-    background: rgba(255,255,255,0.9);
 }
 
 footer p {
@@ -94,26 +103,34 @@ footer p {
 	font-family: Palatino Linotype;
 }
 
+/* Dialog title */
+.title .ui-dialog-titlebar {
+	background: #cdb77c;
+    font-family: Palatino Linotype;   
+}
+
 /* Button CSS */
 .btn {
-  -webkit-border-radius: 30;
-  -moz-border-radius: 30;
-  border-radius: 30px;
-  font-family: Palatino Linotype;
-  color: #ffffff;
-  font-size: 40px;
-  background: #003399;
-  padding: 10px 20px 10px 20px;
-  width: 250px;
-  border: solid #ffffff 0px;
-  text-decoration: none;
-  position: relative;
-  top: 50%
+	-webkit-border-radius: 30;
+	-moz-border-radius: 30;
+	border-radius: 30px;
+	font-family: Palatino Linotype;
+	color: #ffffff;
+	font-size: 30px;
+	background: #003399;
+	padding: 10px 20px 10px 20px;
+	width: 200px;
+	height: 70px;
+	border: solid #ffffff 0px;
+	text-decoration: none;
+	position: relative;
+	top: 50%;
+	vertical-align: middle;
 }
 
 .btn:hover {
-  background: #cfc04b;
-  text-decoration: none;
+	background: #cfc04b;
+	text-decoration: none;
 }
 
 .btn:focus {
@@ -121,22 +138,54 @@ footer p {
 }
 
 .btnTypeTwo {
-  -webkit-border-radius: 30;
-  -moz-border-radius: 30;
-  border-radius: 30px;
-  font-family: Arial;
-  color: #ffffff; 
-  font-size: 16px;
-  background: #1c2856;
-  padding: 10px 20px 10px 20px;
-  width: 100px;
-  border: solid #ffffff 0px;
-  text-decoration: none;
-  position: relative;
+	-webkit-border-radius: 30;
+	-moz-border-radius: 30;
+	border-radius: 30px;
+	font-family: Arial;
+	color: #ffffff; 
+	font-size: 16px;
+	background: #1c2856;
+	padding: 10px 20px 10px 20px;
+	width: 100px;
+	border: solid #ffffff 0px;
+	text-decoration: none;
+	position: relative;
+	vertical-align: top;
+	display: inline-block;
 }
 
 .btnTypeTwo:hover {
-  background: #cdb77c;
-  text-decoration: none;
-  outline:0;
+	background: #cdb77c;
+	text-decoration: none;
+}
+
+.btnTypeTwo:focus {
+	outline:0;
+}
+
+.btnTypeThree {
+	-webkit-border-radius: 30;
+	-moz-border-radius: 30;
+	border-radius: 30px;
+	font-family: Arial;
+	color: #ffffff; 
+	font-size: 16px;
+	background: #1c2856;
+	padding: 10px 20px 10px 20px;
+	width: 150px;
+	height: 60px;
+	border: solid #ffffff 0px;
+	text-decoration: none;
+	position: relative;
+	vertical-align: top;
+	display: inline-block;
+}
+
+.btnTypeThree:hover {
+	background: #cdb77c;
+	text-decoration: none;
+}
+
+.btnTypeThree:focus {
+	outline:0;
 }

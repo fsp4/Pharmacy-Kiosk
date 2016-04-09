@@ -10,7 +10,10 @@
 		function goBack() {
 			window.history.back();
 		}
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 		//disabling insurance card number, date of birth fields. 
 		function disableFields(cb) {
 			document.getElementById("insurance").disabled = cb.checked ? true : false;
