@@ -25,29 +25,53 @@ img {
 	text-align:left;
 }
 
-#tabs li .ui-icon-close { 
+#tabs li .ui-icon-closethick { 
 	float: left; 
 	margin: 0.4em 0.2em 0 0; 
 	cursor: pointer; 
 }
 
-/* 
+#tabs { 
+    padding: 0px; 
+    background: none; 
+    border-width: 0px; 
+} 
+
 #tabs .ui-tabs-nav { 
-    position: absolute; 
-    width: 21em; 
-    transform: translate(-100%,0%) rotate(-90deg); 
-    transform-origin: 100% 0%; 
-} 
-#tabs .ui-tabs-nav li { 
-    float: right; 
-} 
-#tabs .ui-tabs-panel { 
-    padding-left: 3.5em; 
-} 
-#tabs .ui-tabs-panel { 
-    height: 20em; 
+    padding-left: 0px; 
+    background: transparent; 
+    border-width: 0px 0px 1px 0px; 
+    -moz-border-radius: 0px; 
+    -webkit-border-radius: 0px; 
+    border-radius: 0px; 
 }
- */
+ 
+#tabs .ui-tabs-panel { 
+    background: linear-gradient(#cdb77c, #e6dbbe);
+    border-width: 0px 1px 1px 1px; 
+}
+
+#tabs .ui-tabs-nav li { 
+    float: left; 
+	background: #cdb77c;
+	font-size: 70%;
+	font-weight: bold;
+	font-family: Palatino Linotype;
+	-moz-border-radius: 0px; 
+    -webkit-border-radius: 0px; 
+    border-radius: 0px; 
+}
+
+#tabs {
+	font-family: Palatino Linotype;
+	text-align: left;
+}
+
+label {
+	font-family: Palatino Linotype;
+	color: #1c2856;
+	font-weight: bold;
+}
 
 #header,
 #footer {
@@ -61,28 +85,44 @@ img {
 
 #sidebar {
 	float: left;
-	width: 30%;
+	width: 20%;
 }
 
 #content-wrap {
 	float: right;
-	width: 70%;
+	width: 80%;
 }  
 
-table {
+#pickupTable, #dropoffTable, #talkTable { 
+	list-style-type: none; 
+	margin: auto; 
+	padding: 0; 
+	width: 60%; 
+}
+
+ul li {
+	background: #e6dbbe;
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.2em;
+    text-align: center;
+    -webkit-border-radius: 30;
+	-moz-border-radius: 30;
+	border-radius: 30px;
+}
+
+#pickupTable, #dropoffTable {
+	width: 100%;
 	font-family: Palatino Linotype;
 	color: #1c2856; 
 	font-size: 70%;
 }
 
-#pickupTable, #dropoffTable {
-	width: 60%;
-	margin: auto;
-}
-
 #talkTable {
-	width: 60%;
-	margin: auto;
+	width: 100%;
+	font-family: Palatino Linotype;
+	color: #1c2856; 
+	font-size: 70%;
 }
 
 /* Button CSS */
