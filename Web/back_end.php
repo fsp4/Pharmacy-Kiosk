@@ -427,10 +427,9 @@
 
 			httpRequest.open('POST', 'back_end_php.php', true);
 			httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
 			httpRequest.onreadystatechange = function() { updateRows(httpRequest); } ;
 			httpRequest.send(data);
-			t = setTimeout("refreshPage()", 15000);
+// 			t = setTimeout("refreshPage()", 15000);
 		}
 		
 		$(function() {
@@ -446,7 +445,7 @@
 			$( "ul, li" ).disableSelection();
 		  });
 		
-	$(function() {
+		$(function() {
     		$( "#pickupTable" ).draggable({revert: true});
     		$( "#dropoffTable" ).draggable({revert: true});
     		$( "#talkTable" ).draggable({revert: true});
