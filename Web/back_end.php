@@ -113,11 +113,10 @@
 			var data = 'type=' + type + '&id=' + id;
 		
 			// comment this out to disable database connection for easier testing
-			//httpRequest.open('POST', 'back_end_php.php', true);
-			//httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			//httpRequest.onreadystatechange = function() { displayData(); } ;
-			//httpRequest.send(data);
-			//
+// 			httpRequest.open('POST', 'back_end_php.php', true);
+// 			httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+// 			httpRequest.onreadystatechange = function() { displayData(); } ;
+// 			httpRequest.send(data);
 		}
 		
 		function nextTalk() {
@@ -155,11 +154,10 @@
 			var data = 'type=' + type + '&id=' + id;
 		
 			// comment this out to disable database connection for easier testing
-			//httpRequest.open('POST', 'back_end_php.php', true);
-			//httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			//httpRequest.onreadystatechange = function() { displayData(); } ;
-			//httpRequest.send(data);
-			//
+// 			httpRequest.open('POST', 'back_end_php.php', true);
+// 			httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+// 			httpRequest.onreadystatechange = function() { displayData(); } ;
+// 			httpRequest.send(data);
 		}
 	
 		function displayData(item) {
@@ -295,7 +293,7 @@
 				pickupQueue[pickupQueueCount] = currItem;
 				pickupQueueCount++;
 			}
-			else if(type == "returningdropoff" || type == "newdropOff") {
+			else if(type == "returningdropoff" || type == "newdropoff") {
 				dropoffQueue[dropoffQueueCount] = currItem;
 				dropoffQueueCount++;
 			}
@@ -432,7 +430,7 @@
 
 			httpRequest.onreadystatechange = function() { updateRows(httpRequest); } ;
 			httpRequest.send(data);
-// 			t = setTimeout("refreshPage()", 15000);
+			t = setTimeout("refreshPage()", 15000);
 		}
 		
 		$(function() {
@@ -505,10 +503,10 @@
 				var data = 'type=talk' + '&id=' + dropId;
 			}
 			// comment this out to disable database connection for easier testing
-			//httpRequest.open('POST', 'back_end_php.php', true);
-			//httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			//httpRequest.onreadystatechange = function() { displayData(); } ;
-			//httpRequest.send(data);
+// 			httpRequest.open('POST', 'back_end_php.php', true);
+// 			httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+// 			httpRequest.onreadystatechange = function() { displayData(); } ;
+// 			httpRequest.send(data);
 		}
 	</script>
 </head>
