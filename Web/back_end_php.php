@@ -29,6 +29,8 @@
 		$Adata["pickupContents"] = "OK";
 		$Adata["dropoffContents"] = "OK";
 		$Adata["talkContents"] = "OK";
+		$Adata["crows"] = "$client_rows";
+		$Adata["drows"] = "$database_rows";
 		if ($client_rows != $database_rows) {
 			$Adata["Type"] = "Update";
 			$pickupContents = Array();
@@ -75,7 +77,6 @@
 					$Adata["talkContents"] = $talkContents;
 				}	
 			}
-			
 		}
 		else {
 			$Adata["Type"] = "NA";

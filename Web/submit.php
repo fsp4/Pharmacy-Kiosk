@@ -1,15 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Thank You!</title>
-	<link rel="stylesheet" type="text/css" href="menu.css"/>
-</head>
-
-<body>
 <?php
+	// connect to database, if does not exist then create
+	$db = new mysqli('localhost', 'root', '', 'kiosk_queue');
+	if ($db->connect_error) {
+		$db = new mysqli('localhost', 'root', '');
+		if ($db->connect_error) {
+			die ("Could not connect to db " . $db->connect_error);
+		}
+		
+		$db->query("CREATE DATABASE kiosk_queue");
+		$db = new mysqli('localhost', 'root', '', 'kiosk_queue');
+		$db->query("CREATE TABLE `kiosk_queue`.`queue` ( `id` INT NOT NULL AUTO_INCREMENT, `type` TEXT NOT NULL, `refill` TINYINT(1) NOT NULL, `first_name` TEXT NOT NULL,
+		`last_name` TEXT NOT NULL, `middle` TEXT NOT NULL, `date_of_birth` DATE NOT NULL, `gender` TEXT NOT NULL, `position` TEXT NOT NULL, `home_address` TEXT NOT NULL,
+		`city` TEXT NOT NULL, `state` TEXT NOT NULL, `zip` INT(11) NOT NULL, `phone` INT(11) NOT NULL, `phone_type` TEXT NOT NULL, `notifications` TEXT NOT NULL,
+		`allergies_list` MEDIUMTEXT NOT NULL, `current_meds` MEDIUMTEXT NOT NULL, `signature` TEXT NOT NULL, `date` DATE NOT NULL, `relation` TEXT NOT NULL, `returning_customer` TEXT NOT NULL,
+		`insurance_card_number` INT(99) NOT NULL, `allergies` TINYINT(1) NOT NULL, PRIMARY KEY (`id`))");
+		
+		$db = new mysqli('localhost', 'root', '', 'kiosk_queue');
+	}
+
 	$type = $_POST["type"];
 	// type: pickup, returningdropoff, newdropoff, talk, 
-	// queue: ID, type, refill, first_name, last_name, middle_initial, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, realation, returning_customer, insurance_card_number, allergies
+	// queue: ID, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, realation, returning_customer, insurance_card_number, allergies
 	
 	if (strcmp($type, "pickup") == 0) {
 		// get form input
@@ -23,12 +34,6 @@
 		if($returning == "no")
 			$DOB = strip_tags(stripslashes($_POST["DOB"]));
 		
-		// add form input to database
-		// should do something to make the password more secure here...
-		$db = new mysqli('localhost', 'root', '', 'kiosk_queue');
-		if ($db->connect_error):
-		   die ("Could not connect to db " . $db->connect_error);
-		endif;
 		// queue: ID, type, refill, first_name, last_name, middle_initial, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies
 		$query = "INSERT INTO queue VALUES (null, '$type', '', '$firstname', '$lastname', '', '$DOB', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '$returning', '', '')";
 		$db->query($query);
@@ -45,12 +50,6 @@
 		$lastname = strip_tags(stripslashes($_POST["lastname"]));
 		$DOB = strip_tags(stripslashes($_POST["DOB"]));
 		
-		// add form input to database
-		// should do something to make the password more secure here...
-		$db = new mysqli('localhost', 'root', '', 'kiosk_queue');
-		if ($db->connect_error):
-		   die ("Could not connect to db " . $db->connect_error);
-		endif;
 		$query = "INSERT INTO queue VALUES (null, '$type', '', '$firstname', '$lastname', '', '$DOB', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '$returning', '', '$allergies')";
 		$db->query($query);
 	}
@@ -105,13 +104,6 @@
 		$current_meds = strip_tags(stripslashes($_POST["current_meds"]));
 		$signature = strip_tags(stripslashes($_POST["signature"]));
 		$date = strip_tags(stripslashes($_POST["date"]));
-
-		// add form input to database
-		// should do something to make the password more secure here...
-		$db = new mysqli('localhost', 'root', '', 'kiosk_queue');
-		if ($db->connect_error):
-		   die ("Could not connect to db " . $db->connect_error);
-		endif;
 		
 		$query = "INSERT INTO queue VALUES (null, '$type', '$refill', '$firstname', '$lastname', '$middle', '$DOB', '$gender', '$position', '$home', '$city', '$state', '$zip', '$phone', '$phone_type', '$notifications', '$allergies_list', '$current_meds', '$signature', '$date', '', '', '', '')";
 		$db->query($query);
@@ -120,24 +112,17 @@
 		// get form input
 		$firstname = strip_tags(stripslashes($_POST["firstname"]));
 		$lastname = strip_tags(stripslashes($_POST["lastname"]));
-
-		// add form input to database
-		// should do something to make the password more secure here...
-		$db = new mysqli('localhost', 'root', '', 'kiosk_queue');
-		if ($db->connect_error):
-		   die ("Could not connect to db " . $db->connect_error);
-		endif;
+		
 		$query = "INSERT INTO queue VALUES (null, '$type', '', '$firstname', '$lastname', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')";
 		$db->query($query);
 	}
 	else {
 		echo "error";
 	}
+	
 	// set session variable to show queue number
 	$rr = $db->query("SELECT * FROM queue");
 	$database_rows = $rr->num_rows;
 	$_SESSION["num"] = $database_rows;
 	include("thankyou.php");
 ?>
-</body>
-</html>
