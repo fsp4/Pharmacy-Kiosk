@@ -19,7 +19,9 @@
 		}
 		$firstname = strip_tags(stripslashes($_POST["firstname"]));
 		$lastname = strip_tags(stripslashes($_POST["lastname"]));
-		$DOB = strip_tags(stripslashes($_POST["DOB"]));
+		$DOB = null;
+		if($returning == "no")
+			$DOB = strip_tags(stripslashes($_POST["DOB"]));
 		
 		// add form input to database
 		// should do something to make the password more secure here...

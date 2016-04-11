@@ -1,0 +1,112 @@
+html {
+	font-family: sans-serif;
+	-webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    height: 100%;
+}
+
+body {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    margin: auto;
+    text-align:center;
+    height: 100%;
+}
+
+img {
+	width:50%;
+}
+
+.tab {
+	font-family: Palatino Linotype;
+	font-size: 60%;
+	text-align:left;
+}
+
+#tabs li .ui-icon-close { 
+	float: left; 
+	margin: 0.4em 0.2em 0 0; 
+	cursor: pointer; 
+}
+
+/* 
+#tabs .ui-tabs-nav { 
+    position: absolute; 
+    width: 21em; 
+    transform: translate(-100%,0%) rotate(-90deg); 
+    transform-origin: 100% 0%; 
+} 
+#tabs .ui-tabs-nav li { 
+    float: right; 
+} 
+#tabs .ui-tabs-panel { 
+    padding-left: 3.5em; 
+} 
+#tabs .ui-tabs-panel { 
+    height: 20em; 
+}
+ */
+
+#header,
+#footer {
+	min-height: 40px;
+}
+	
+#main-wrap {
+	min-height: 80%;
+	overflow: hidden;
+}
+
+#sidebar {
+	float: left;
+	width: 30%;
+}
+
+#content-wrap {
+	float: right;
+	width: 70%;
+}  
+
+table {
+	font-family: Palatino Linotype;
+	color: #1c2856; 
+	font-size: 70%;
+}
+
+#pickupTable, #dropoffTable {
+	width: 60%;
+	margin: auto;
+}
+
+#talkTable {
+	width: 60%;
+	margin: auto;
+}
+
+/* Button CSS */
+.btn {
+	-webkit-border-radius: 30;
+	-moz-border-radius: 30;
+	border-radius: 30px;
+	font-family: Palatino Linotype;
+	color: #ffffff; 
+	font-size: 14px;
+	background: #1c2856;
+	padding: 10px 20px 10px 20px;
+	border: solid #ffffff 0px;
+	text-decoration: none;
+	text-align: center;
+	display: inline-block;
+
+}
+
+.btn:hover {
+	background: #cdb77c;
+	text-decoration: none;
+}
+
+.btn:focus {
+	outline:0;
+}
