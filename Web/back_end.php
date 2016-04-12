@@ -71,11 +71,9 @@
 
 
 		var data = 'type=' + type + '&id=' + id;
-	
-		// comment this out to disable database connection for easier testing
+		
 		//httpRequest.open('POST', 'back_end_php.php', true);
 		//httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		//httpRequest.onreadystatechange = function() { displayData(); } ;
 		//httpRequest.send(data);
 	}
 
@@ -106,17 +104,14 @@
 		var type = 3; 
 		var T = document.getElementById("dropoffTable");
 		var id = T.getElementsByTagName("li")[0].className;
-		console.log(id);
 		var item = removeRowFromDropOffTable(id);
 		displayData(item);
 		jQuery("#dropoffTable li:first-child").remove();
 
 		var data = 'type=' + type + '&id=' + id;
-	
-		// comment this out to disable database connection for easier testing
+		
 		//httpRequest.open('POST', 'back_end_php.php', true);
 		//httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		//httpRequest.onreadystatechange = function() { displayData(); } ;
 		//httpRequest.send(data);
 	}
 	
@@ -147,20 +142,66 @@
 		var type = 4; 
 		var T = document.getElementById("talkTable");
 		var id = T.getElementsByTagName("li")[0].className;
-		console.log(id);
 		var item = removeRowFromTalkTable(id);
 		displayData(item);
 		jQuery("#talkTable li:first-child").remove();
 
 		var data = 'type=' + type + '&id=' + id;
-	
-		// comment this out to disable database connection for easier testing
+		
 		//httpRequest.open('POST', 'back_end_php.php', true);
 		//httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		//httpRequest.onreadystatechange = function() { displayData(); } ;
 		//httpRequest.send(data);
 	}
+	
+	function addComment(id) {
+		var httpRequest;
+		
+		// remove dialog window
+		//$( "#flag_dialog" ).dialog( "close" );
+		
+		if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+			httpRequest = new XMLHttpRequest();
+			if (httpRequest.overrideMimeType) {
+				httpRequest.overrideMimeType('text/xml');
+			}
+		}
+		else if (window.ActiveXObject) { // IE
+			try {
+				httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+			}
+			catch (e) {
+				try {
+					httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				catch (e) {}
+			}
+		}
+		if (!httpRequest) {
+			alert('Cannot create an XMLHTTP instance');
+		}
 
+		var type = 5; 
+		var newComment = document.getElementById("textareaID" + id).value;
+		var data = 'type=' + type + '&id=' + id + '&comment=' + newComment;
+		
+		var comment = "<p id=\"comment" + id + "\"><b>Comment: </b>" + newComment + "</p>";
+		// if comment element already exists
+		if (document.getElementById("comment" + id)) {
+			var commentID = "comment" + id;
+			$( "p#" + commentID + "" ).replaceWith( comment );
+		}
+		// if no comment exists
+		else {
+			var tabSize = document.getElementById(id).childNodes.length;
+			var lastElement = document.getElementById(id).childNodes[tabSize - 1];
+			$( comment ).insertBefore( lastElement );
+		}
+		
+		httpRequest.open('POST', 'back_end_php.php', true);
+		httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		httpRequest.send(data);
+	}
+	
 	function displayData(item) {
 		var id = item.id;
 		var type = item.type;
@@ -170,48 +211,81 @@
 		var relation = item.relation;
 		var returning_customer = item.returning_customer;
 		var allergies = item.allergies;
-		if(allergies == "1")
+		if (allergies == "1") {
 			allergies = "Yes";
-		else
-			allergies= "No";
-		
-		// returning customer checkbox			
-		var label = document.createElement("label");
-		label.innerHTML = "<b>Returning Customer: </b>";
-		var checkbox = document.createElement("input");
-		checkbox.type = "checkbox";
-		checkbox.name = "returningcustomer";
-		if (returning_customer == ("yes")) {
-			checkbox.checked = true;
 		}
-		checkbox.disabled = true; 			
-						
+		else {
+			allergies= "No";
+		}
+		var comment = item.comment;
+		// if no comment, don't show in tab
+		if (comment) {
+			comment = "<p id=\"comment" + id + "\"><b>Comment: </b>" + comment + "</p>";
+		}
+		
 		var num_tabs = $("div#tabs ul li").length + 1;
 		$("div#tabs ul").append(
 			"<li><a href='#" + id + "'>" + last_name + "</a><span class=\"ui-icon ui-icon-close\"></span></li>"
 		);
 		
-		if(type != "talk"){
+		if (type != "talk") {
 			$("div#tabs").append(
 				"<div id='" + id + "'>" + 
 				"<p><b>First Name: </b>" + first_name + "</p>" +
 				"<p><b>Last Name: </b>" + last_name + "</p>" +
 				"<p><b>Date of Birth: </b>" + date_of_birth + "</p>" +
 				"<p><b>Allergies: </b>" + allergies + "</p>" + 
-
+				comment +
+				"<div class=\"dialog\">" +
+				"<textarea rows=\"4\" cols=\"15\" id=\"textareaID" + id + "\">" +
+				"</textarea>" +
+				"<br>" +
+				"<input type=\"button\" onclick=\"addComment(" + id + ")\" value=\"Add Comment\">" + 
+				"</div>" + 
 				"</div>"
 			);
 		}
-		else{
+		else {
 			$("div#tabs").append(
 				"<div id='" + id + "'>" + 
 				"<p><b>First Name: </b>" + first_name + "</p>" +
 				"<p><b>Last Name: </b>" + last_name + "</p>" +
-
+				comment +
+				"<input type=\"button\" id=\"open\" value=\"Flag\">" + 
 				"</div>"
 			);
 		}
 		$("div#tabs").tabs("refresh");
+		
+		/*
+		// open dialog window with new comment textarea and 'Add' button
+		"<input type=\"button\" class=\"open\" value=\"Flag\">" + 
+		"</div>" + 
+		"<div class=\"dialog\">" +
+		"<textarea rows=\"6\" cols=\"20\">" +
+		"</textarea>" +
+		"<br>" +
+		"<input type=\"button\" onclick=\"addComment(" + id + ")\" value=\"Add Comment\">" + 
+		"</div>"
+		
+		// this only adds dialog to the first tab
+  		$(function() {
+    		$( ".dialog" ).dialog({
+      		autoOpen: false,
+      		dialogClass: 'title',
+      		show: {
+        		effect: "drop",
+        		duration: 100
+     		},
+      		hide: {
+        		effect: "drop",
+        		duration: 100
+      		}
+    		});
+    		$( ".open" ).click(function() {
+      			$( ".dialog" ).dialog( "open" );
+    		});
+  		});*/
 	}
 
 	function updateRows(httpRequest) {
@@ -220,8 +294,6 @@
 				var data = httpRequest.responseText;
 				var newData = JSON.parse(data);
 				var rettype = newData.Type;
-				console.log(rettype);
-				console.log(newData.crows + "  " + newData.drows);
 				if (rettype == "Update") {
 					pickupQueueCount = 0;
 					dropoffQueueCount = 0;
@@ -230,23 +302,22 @@
 					var dropoffRows = newData.dropoffContents;
 					var talkRows = newData.talkContents;
 
-					
 					if (pickupRows != "OK") {
 						for (var i = 0; i < pickupRows.length; i++) {
 							var theRow = pickupRows[i];
-							addRowToList(theRow.id, theRow.type, theRow.refill, theRow.first_name, theRow.last_name, theRow.middle, theRow.date_of_birth, theRow.gender, theRow.position, theRow.home_address, theRow.city, theRow.state, theRow.zip, theRow.phone, theRow.phone_type, theRow.notifications, theRow.allergies_list, theRow.current_meds, theRow.signature, theRow.date, theRow.relation, theRow.returning_customer, theRow.insurance_card_number, theRow.allergies);
+							addRowToList(theRow.id, theRow.type, theRow.refill, theRow.first_name, theRow.last_name, theRow.middle, theRow.date_of_birth, theRow.gender, theRow.position, theRow.home_address, theRow.city, theRow.state, theRow.zip, theRow.phone, theRow.phone_type, theRow.notifications, theRow.allergies_list, theRow.current_meds, theRow.signature, theRow.date, theRow.relation, theRow.returning_customer, theRow.insurance_card_number, theRow.allergies, theRow.comment);
 						}
 					}
 					if (dropoffRows != "OK") {
 						for (var i = 0; i < dropoffRows.length; i++) {
 							var theRow = dropoffRows[i];
-							addRowToList(theRow.id, theRow.type, theRow.refill, theRow.first_name, theRow.last_name, theRow.middle, theRow.date_of_birth, theRow.gender, theRow.position, theRow.home_address, theRow.city, theRow.state, theRow.zip, theRow.phone, theRow.phone_type, theRow.notifications, theRow.allergies_list, theRow.current_meds, theRow.signature, theRow.date, theRow.relation, theRow.returning_customer, theRow.insurance_card_number, theRow.allergies);
+							addRowToList(theRow.id, theRow.type, theRow.refill, theRow.first_name, theRow.last_name, theRow.middle, theRow.date_of_birth, theRow.gender, theRow.position, theRow.home_address, theRow.city, theRow.state, theRow.zip, theRow.phone, theRow.phone_type, theRow.notifications, theRow.allergies_list, theRow.current_meds, theRow.signature, theRow.date, theRow.relation, theRow.returning_customer, theRow.insurance_card_number, theRow.allergies, theRow.comment);
 						}
 					}
 					if (talkRows != "OK") {
 						for (var i = 0; i < talkRows.length; i++) {
 							var theRow = talkRows[i];
-							addRowToList(theRow.id, theRow.type, theRow.refill, theRow.first_name, theRow.last_name, theRow.middle, theRow.date_of_birth, theRow.gender, theRow.position, theRow.home_address, theRow.city, theRow.state, theRow.zip, theRow.phone, theRow.phone_type, theRow.notifications, theRow.allergies_list, theRow.current_meds, theRow.signature, theRow.date, theRow.relation, theRow.returning_customer, theRow.insurance_card_number, theRow.allergies);
+							addRowToList(theRow.id, theRow.type, theRow.refill, theRow.first_name, theRow.last_name, theRow.middle, theRow.date_of_birth, theRow.gender, theRow.position, theRow.home_address, theRow.city, theRow.state, theRow.zip, theRow.phone, theRow.phone_type, theRow.notifications, theRow.allergies_list, theRow.current_meds, theRow.signature, theRow.date, theRow.relation, theRow.returning_customer, theRow.insurance_card_number, theRow.allergies, theRow.comment);
 						}
 					}
 				
@@ -262,7 +333,7 @@
 		}
 	}
 
-	function Queue(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies) {
+	function Queue(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, comment) {
 		this.id = id;
 		this.type = type;
 		this.refill = refill;
@@ -287,10 +358,11 @@
 		this.returning_customer = returning_customer;
 		this.insurance_card_number = insurance_card_number;
 		this.allergies = allergies;
+		this.comment = comment;
 	}
 
-	function addRowToList(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies) {
-		var currItem = new Queue(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies);		
+	function addRowToList(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, comment) {
+		var currItem = new Queue(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, comment);		
 		if (type == "pickup") {
 			pickupQueue[pickupQueueCount] = currItem;
 			pickupQueueCount++;
@@ -354,25 +426,25 @@
 			addRow(pickupQueue[i].id, pickupQueue[i].type, pickupQueue[i].refill, pickupQueue[i].first_name, pickupQueue[i].last_name, pickupQueue[i].middle, 
 				   pickupQueue[i].date_of_birth, pickupQueue[i].gender, pickupQueue[i].position, pickupQueue[i].home_address, pickupQueue[i].city, pickupQueue[i].state, 
 				   pickupQueue[i].zip, pickupQueue[i].phone, pickupQueue[i].phone_type, pickupQueue[i].notifications, pickupQueue[i].allergies_list, pickupQueue[i].current_meds, 
-				   pickupQueue[i].signature, pickupQueue[i].date, pickupQueue[i].relation, pickupQueue[i].returning_customer, pickupQueue[i].insurance_card_number, pickupQueue[i].allergies);
+				   pickupQueue[i].signature, pickupQueue[i].date, pickupQueue[i].relation, pickupQueue[i].returning_customer, pickupQueue[i].insurance_card_number, pickupQueue[i].allergies, pickupQueue[i].comment);
 		}
 		for (var i = 0; i < dropoffQueueCount; i++) {
 			addRow(dropoffQueue[i].id, dropoffQueue[i].type, dropoffQueue[i].refill, dropoffQueue[i].first_name, dropoffQueue[i].last_name, 
 				   dropoffQueue[i].middle, dropoffQueue[i].date_of_birth, dropoffQueue[i].gender, dropoffQueue[i].position, dropoffQueue[i].home_address, 
 				   dropoffQueue[i].city, dropoffQueue[i].state, dropoffQueue[i].zip, dropoffQueue[i].phone, dropoffQueue[i].phone_type, dropoffQueue[i].notifications, 
 				   dropoffQueue[i].allergies_list, dropoffQueue[i].current_meds, dropoffQueue[i].signature, dropoffQueue[i].date, dropoffQueue[i].relation, 
-				   dropoffQueue[i].returning_customer, dropoffQueue[i].insurance_card_number, dropoffQueue[i].allergies);
+				   dropoffQueue[i].returning_customer, dropoffQueue[i].insurance_card_number, dropoffQueue[i].allergies, dropoffQueue[i].comment);
 		}
 		for (var i = 0; i < talkQueueCount; i++) {
 			addRow(talkQueue[i].id, talkQueue[i].type, talkQueue[i].refill, talkQueue[i].first_name, talkQueue[i].last_name, talkQueue[i].middle, 
 				   talkQueue[i].date_of_birth, talkQueue[i].gender, talkQueue[i].position, talkQueue[i].home_address, talkQueue[i].city, talkQueue[i].state, 
 				   talkQueue[i].zip, talkQueue[i].phone, talkQueue[i].phone_type, talkQueue[i].notifications, talkQueue[i].allergies_list, talkQueue[i].current_meds, 
-				   talkQueue[i].signature, talkQueue[i].date, talkQueue[i].relation, talkQueue[i].returning_customer, talkQueue[i].insurance_card_number, talkQueue[i].allergies);
+				   talkQueue[i].signature, talkQueue[i].date, talkQueue[i].relation, talkQueue[i].returning_customer, talkQueue[i].insurance_card_number, talkQueue[i].allergies, talkQueue[i].comment);
 		}
 	}
 
 	function addRow(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, 
-					phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies) {
+					phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, comment) {
 		if (type == 'pickup') {
 			var T = document.getElementById("pickupTable");
 		}

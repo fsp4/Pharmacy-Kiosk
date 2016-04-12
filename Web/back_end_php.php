@@ -15,7 +15,13 @@
 		`last_name` TEXT NOT NULL, `middle` TEXT NOT NULL, `date_of_birth` DATE NOT NULL, `gender` TEXT NOT NULL, `position` TEXT NOT NULL, `home_address` TEXT NOT NULL,
 		`city` TEXT NOT NULL, `state` TEXT NOT NULL, `zip` INT(11) NOT NULL, `phone` INT(11) NOT NULL, `phone_type` TEXT NOT NULL, `notifications` TEXT NOT NULL,
 		`allergies_list` MEDIUMTEXT NOT NULL, `current_meds` MEDIUMTEXT NOT NULL, `signature` TEXT NOT NULL, `date` DATE NOT NULL, `relation` TEXT NOT NULL, `returning_customer` TEXT NOT NULL,
-		`insurance_card_number` INT(99) NOT NULL, `allergies` TINYINT(1) NOT NULL, PRIMARY KEY (`id`))");
+		`insurance_card_number` INT(99) NOT NULL, `allergies` TINYINT(1) NOT NULL, `comment` TEXT NOT NULL, PRIMARY KEY (`id`))");
+		
+		$db->query("CREATE TABLE `kiosk_queue`.`queue_archive` ( `id` INT NOT NULL, `type` TEXT NOT NULL, `refill` TINYINT(1) NOT NULL, `first_name` TEXT NOT NULL,
+		`last_name` TEXT NOT NULL, `middle` TEXT NOT NULL, `date_of_birth` DATE NOT NULL, `gender` TEXT NOT NULL, `position` TEXT NOT NULL, `home_address` TEXT NOT NULL,
+		`city` TEXT NOT NULL, `state` TEXT NOT NULL, `zip` INT(11) NOT NULL, `phone` INT(11) NOT NULL, `phone_type` TEXT NOT NULL, `notifications` TEXT NOT NULL,
+		`allergies_list` MEDIUMTEXT NOT NULL, `current_meds` MEDIUMTEXT NOT NULL, `signature` TEXT NOT NULL, `date` DATE NOT NULL, `relation` TEXT NOT NULL, `returning_customer` TEXT NOT NULL,
+		`insurance_card_number` INT(99) NOT NULL, `allergies` TINYINT(1) NOT NULL, `comment` TEXT NOT NULL, PRIMARY KEY (`id`))");
 		
 		$db = new mysqli('localhost', 'root', '', 'kiosk_queue');
 	}
@@ -64,6 +70,7 @@
 				$currArr["returning_customer"] = $curr["returning_customer"];
 				$currArr["insurance_card_number"] = $curr["insurance_card_number"];
 				$currArr["allergies"] = $curr["allergies"];
+				$currArr["comment"] = $curr["comment"];
 				if (strcmp($curr["type"], 'pickup') == 0) {
 					$pickupContents[] = $currArr;
 					$Adata["pickupContents"] = $pickupContents;
@@ -88,8 +95,16 @@
 		$returndata = json_encode($Adata);
 		echo $returndata;
 	}
+	// flag/comment
+	else if ($type == 5) {
+		$id = strip_tags($_POST["id"]);
+		$comment = strip_tags($_POST["comment"]);
+		$db->query("UPDATE queue_archive SET comment='$comment' WHERE id='$id'");
+	}
+	// next pickup/dropoff/question
 	else {
 		$id = strip_tags($_POST["id"]);
-		$rr = $db->query("DELETE FROM queue WHERE id='$id'");
+		$db->query("INSERT INTO queue_archive SELECT * FROM queue WHERE id='$id'");
+		$db->query("DELETE FROM queue WHERE id='$id'");
 	}
 ?>
