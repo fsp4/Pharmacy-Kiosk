@@ -376,7 +376,7 @@
 			talkQueueCount++;
 		}
 	}
-
+	
 	function removeRowFromPickupTable(id) {
 		var ret = 0;
 		for (var i = 0; i < pickupQueue.length; i++) {
@@ -454,11 +454,11 @@
 		}
 		else
 			var T = document.getElementById("talkTable");
-	
+			
 		var li = document.createElement("li");
 		li.id = "ui-state-default";
 		li.className = id;
-	
+		
 		if (type == 'pickup') {
 			li.appendChild(document.createTextNode(last_name));
 			T.appendChild(li);
@@ -616,6 +616,16 @@
 				<ul id="list" class="ui-tabs-nav">
 				</ul>
 			</div>
+		</div>
+		<div id="right-sidebar">
+			<label for="pickupTable2">Pick Ups</label>	
+			<ul id ="pickupTable2"></ul>
+			<br>
+			<label for="dropoffTable2">Drop Offs</label>
+			<ul id = "dropoffTable2"></ul>
+			<br>
+			<label for="talkTable2">Questions</label>
+			<ul id = "talkTable2"></ul>
 		</div>
 	</div>
 	<div id="footer">
