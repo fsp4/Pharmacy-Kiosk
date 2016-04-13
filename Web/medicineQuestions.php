@@ -61,25 +61,7 @@
 	</div>
 	<br></br>
 	<div id="accordion">
-		<h3> Diabetes Drugs </h3>
-		<div>
-			<p></p>
-		</div>
 		
-		<h3> Antibiotics </h3>
-		<div>
-			<p></p>
-		</div>
-		
-		<h3> Birth Control </h3>
-		<div>
-			<p></p>
-		</div>	
-		
-		<h3> Blood Pressure </h3>
-		<div>
-			<p></p>
-		</div>
 	</div>
 	<script>
 		//Script currently assumes xml file as stored on server, and this file on server can be manipulated by the pharmacy.
@@ -101,24 +83,15 @@
 		function parseFAQ(xml) {
 		    var x, y, z, d, drug, i, xmlDoc, txt;
 		    xmlDoc = xml.responseXML;
-		    txt = "";
 		    x = xmlDoc.getElementsByTagName('drug');
 		    for (i = 0 ; i < x.length; i++) {
 		    	d = xmlDoc.getElementsByTagName("drug")[i];
 		    	drug = d.attributes.getNamedItem("name").nodeValue;
-		    	
-		    	//append drug name as heading
-		    	//TODO accordion for heading
-		    	var node = document.createElement("h3")
-		    	var textnode = document.createTextNode(drug);
-		    	node.appendChild(textnode);
-		    	document.getElementById("accordion").appendChild(node);
-		    	var divNode = document.createElement("div");
-    			var pNode = document.createElement("p");
     			var faq = "faq" + i.toString();
-    			pNode.setAttribute("id", faq);
-    			divNode.appendChild(pNode);
-    			document.getElementById("accordion").appendChild(divNode);
+
+    			var newDiv = "<h3>" + drug + "</h3><div><p id = \"" + faq + "\"></p></div>" 
+    			$('#accordion').append(newDiv)
+    			$('#accordion').accordion("refresh");
 
 				y = d.getElementsByTagName('Question');
 		    	z = d.getElementsByTagName('Answer');
