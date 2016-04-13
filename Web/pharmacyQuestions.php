@@ -123,19 +123,20 @@
 						}
 				    }
 				};
+				//assume faq.xml is file name with FAQ contents.
 				xhttp.open("GET", "faq.xml", true); 
 				xhttp.send();
 	
 				function parseFAQ(xml) {
-				    var x, i, xmlDoc, txt;
+				    var x, y, i, xmlDoc, txt;
 				    xmlDoc = xml.responseXML;
 				    txt = "";
 				    x = xmlDoc.getElementsByTagName('Question');
-				    y = xmlDoc.getElementsByTagName('Answer')
+				    y = xmlDoc.getElementsByTagName('Answer');
 				    //assume: lengths of x and y SHOULD logically be equivalent for question and answer format.
-				    for (i = 0 ; i <x.length; i++) {
+				    for (i = 0 ; i < x.length; i++) {
 		        		txt += "<b>" + x[i].childNodes[0].nodeValue + "<br></b>"
-		        				+ y[i].childNodes[0].nodeValue + "<br>";
+		        				+ y[i].childNodes[0].nodeValue + "<br><br>";
 				    }
 				    document.getElementById("faq").innerHTML = txt;
 				}

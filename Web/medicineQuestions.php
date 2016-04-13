@@ -79,7 +79,59 @@
 		<h3> Blood Pressure </h3>
 		<div>
 			<p></p>
-		</div>	
+		</div>
 	</div>
+	<script>
+		//Script currently assumes xml file as stored on server, and this file on server can be manipulated by the pharmacy.
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+		    if (xhttp.readyState == 4) {
+		    	if (xhttp.status == 200 || xhttp.status == 0) {
+		        	parseFAQ(xhttp);
+				}
+				else {
+					alert("XML specifications for FAQ not found.");
+				}
+		    }
+		};
+		//assume drugFAQ.xml is file name with FAQ contents.
+		xhttp.open("GET", "drugFAQ.xml", true); 
+		xhttp.send();
+
+		function parseFAQ(xml) {
+		    var x, y, z, d, drug, i, xmlDoc, txt;
+		    xmlDoc = xml.responseXML;
+		    txt = "";
+		    x = xmlDoc.getElementsByTagName('drug');
+		    for (i = 0 ; i < x.length; i++) {
+		    	d = xmlDoc.getElementsByTagName("drug")[i];
+		    	drug = d.attributes.getNamedItem("name").nodeValue;
+		    	
+		    	//append drug name as heading
+		    	//TODO accordion for heading
+		    	var node = document.createElement("h3")
+		    	var textnode = document.createTextNode(drug);
+		    	node.appendChild(textnode);
+		    	document.getElementById("accordion").appendChild(node);
+		    	var divNode = document.createElement("div");
+    			var pNode = document.createElement("p");
+    			var faq = "faq" + i.toString();
+    			pNode.setAttribute("id", faq);
+    			divNode.appendChild(pNode);
+    			document.getElementById("accordion").appendChild(divNode);
+
+				y = d.getElementsByTagName('Question');
+		    	z = d.getElementsByTagName('Answer');
+		    	txt = ""
+		    	//assume: lengths of x and y SHOULD logically be equivalent for question and answer format.
+		    	for (j = 0 ; j < y.length; j++){
+        			txt += "<b>" + y[j].childNodes[0].nodeValue + "<br></b>"
+        					+ z[j].childNodes[0].nodeValue + "<br><br>";
+		    	}
+		    	document.getElementById(faq).innerHTML = txt;
+			}
+		    
+		}
+	</script>
 </body>
 </html>
