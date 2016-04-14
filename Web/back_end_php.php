@@ -28,23 +28,29 @@
 	
 	if ($type == 1) {
 		$client_rows = strip_tags($_POST["rows"]);
+		$client_archive_rows = strip_tags($_POST["archive_rows"]);
 		$newrows="";
-		$rr = $db->query("SELECT * FROM queue");
-		$database_rows = $rr->num_rows;
-		$Adata["num"] = $client_rows . " " . $database_rows;
+		$queue_rows = $db->query("SELECT * FROM queue");
+		$queue_archive_rows =  $db->query("SELECT * FROM queue_archive");
+		$queue_rows_num = $queue_rows->num_rows;
+		$queue_archive_rows_num = $queue_archive_rows->num_rows;
+		$Adata["num"] = $client_rows . " " . $queue_rows_num;
 		$Adata["pickupContents"] = "OK";
 		$Adata["dropoffContents"] = "OK";
 		$Adata["talkContents"] = "OK";
+		$Adata["pickupArchiveContents"] = "OK";
+		$Adata["dropoffArchiveContents"] = "OK";
+		$Adata["talkArchiveContents"] = "OK";
 		$Adata["crows"] = "$client_rows";
-		$Adata["drows"] = "$database_rows";
-		if ($client_rows != $database_rows) {
+		$Adata["drows"] = "$queue_rows_num";
+		if (($client_rows != $queue_rows_num) || $client_archive_rows != $queue_archive_rows_num) {
 			$Adata["Type"] = "Update";
 			$pickupContents = Array();
 			$dropoffContents = Array();
 			$talkContents = Array();
-			for ($i = 0; $i < $database_rows; $i++) {
-				$rr->data_seek($i);
-				$curr = $rr->fetch_array();
+			for ($i = 0; $i < $queue_rows_num; $i++) {
+				$queue_rows->data_seek($i);
+				$curr = $queue_rows->fetch_array();
 				$currArr = Array();
 				$currArr["id"] = $curr["id"];
 				$currArr["type"] = $curr["type"];
@@ -84,12 +90,60 @@
 					$Adata["talkContents"] = $talkContents;
 				}	
 			}
+			$pickupArchiveContents = Array();
+			$dropoffArchiveContents = Array();
+			$talkArchiveContents = Array();
+			for ($i = 0; $i < $queue_archive_rows_num; $i++) {
+				$queue_archive_rows->data_seek($i);
+				$curr = $queue_archive_rows->fetch_array();
+				$currArr = Array();
+				$currArr["id"] = $curr["id"];
+				$currArr["type"] = $curr["type"];
+				$currArr["refill"] = $curr["refill"];
+				$currArr["first_name"] = $curr["first_name"];
+				$currArr["last_name"] = $curr["last_name"];
+				$currArr["middle"] = $curr["middle"];
+				$currArr["date_of_birth"] = $curr["date_of_birth"];
+				$currArr["gender"] = $curr["gender"];
+				$currArr["position"] = $curr["position"];
+				$currArr["home_address"] = $curr["home_address"];
+				$currArr["city"] = $curr["city"];
+				$currArr["state"] = $curr["state"];
+				$currArr["zip"] = $curr["zip"];
+				$currArr["phone"] = $curr["phone"];
+				$currArr["phone_type"] = $curr["phone_type"];
+				$currArr["notifications"] = $curr["notifications"];
+				$currArr["allergies_list"] = $curr["allergies_list"];
+				$currArr["current_meds"] = $curr["current_meds"];
+				$currArr["signature"] = $curr["signature"];
+				$currArr["date"] = $curr["date"];
+				$currArr["relation"] = $curr["relation"];
+				$currArr["returning_customer"] = $curr["returning_customer"];
+				$currArr["insurance_card_number"] = $curr["insurance_card_number"];
+				$currArr["allergies"] = $curr["allergies"];
+				$currArr["comment"] = $curr["comment"];
+				if (strcmp($curr["type"], 'pickup') == 0) {
+					$pickupArchiveContents[] = $currArr;
+					$Adata["pickupArchiveContents"] = $pickupArchiveContents;
+				}
+				else if ((strcmp($curr["type"], 'returningdropoff') == 0) || ((strcmp($curr["type"], 'newdropoff') == 0))){
+					$dropoffArchiveContents[] = $currArr;
+					$Adata["dropoffArchiveContents"] = $dropoffArchiveContents;
+				}
+				else{
+					$talkArchiveContents[] = $currArr;
+					$Adata["talkArchiveContents"] = $talkArchiveContents;
+				}	
+			}
 		}
 		else {
 			$Adata["Type"] = "NA";
 			$Adata["pickupContents"] = "OK";
 			$Adata["dropoffContents"] = "OK";
 			$Adata["talkContents"] = "OK";
+			$Adata["pickupArchiveContents"] = "OK";
+			$Adata["dropoffArchiveContents"] = "OK";
+			$Adata["talkArchiveContents"] = "OK";
 		}
 		
 		$returndata = json_encode($Adata);
