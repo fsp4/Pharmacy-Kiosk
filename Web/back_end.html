@@ -1,0 +1,47 @@
+<html>
+<head>
+<title>Kiosk Queue</title>
+<link rel="stylesheet" type="text/css" href="backend.css"/>	
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="back_end_javascript.js"></script>
+</head>
+<body onload = "refreshPage()">
+	<div id="header"> <p><img src="pitt_logo.png"></p> </div>
+	<div id="main-wrap">
+		<div id="sidebar">			
+			<label for="pickupTable">Pick Ups</label>	
+			<ul id ="pickupTable"></ul>
+			<br>
+			<label for="dropoffTable">Drop Offs</label>
+			<ul id = "dropoffTable"></ul>
+			<br>
+			<label for="talkTable">Questions</label>
+			<ul id = "talkTable"></ul>
+		</div>
+		<div id="content-wrap">
+			<div id="tabs">
+				<ul id="list" class="ui-tabs-nav">
+				</ul>
+			</div>
+		</div>
+		<div id="right-sidebar">
+			<label for="pickupTable2">Pick Ups</label>	
+			<ul id ="pickupTable2"></ul>
+			<br>
+			<label for="dropoffTable2">Drop Offs</label>
+			<ul id = "dropoffTable2"></ul>
+			<br>
+			<label for="talkTable2">Questions</label>
+			<ul id = "talkTable2"></ul>
+		</div>
+	</div>
+	<div id="footer">
+		<input type="button" class="btn" onclick="nextItem(2)" value="Next Pickup">
+		<input type="button" class="btn" onclick="nextItem(3)" value="Next Dropoff">
+		<input type="button" class="btn" onclick="nextItem(4)" value="Questions">
+	</div>
+</body>
+</html>

@@ -121,23 +121,22 @@ ul li, li2 {
     text-align: center;
     -webkit-border-radius: 30;
 	-moz-border-radius: 30;
-	border-radius: 30px;
+	border-radius: 5px 5px 5px 5px;
 	list-style-type: none;
 }
 
 
-#pickupTable, #dropoffTable, #pickupTable2, #dropoffTable2 {
+#pickupTable, #dropoffTable, #pickupTable2, #dropoffTable2, #talkTable, #talkTable2 {
 	width: 100%;
 	font-family: Palatino Linotype;
 	color: #1c2856; 
 	font-size: 70%;
+	overflow: auto;
+	height: 200px;
 }
 
-#talkTable, #talkTable2 {
-	width: 100%;
-	font-family: Palatino Linotype;
-	color: #1c2856; 
-	font-size: 70%;
+[list-style-type="comment"] {
+	background: #e6bec9;
 }
 
 /* Button CSS */
