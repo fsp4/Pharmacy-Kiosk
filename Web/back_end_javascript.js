@@ -92,6 +92,15 @@ function addComment(id) {
 		$( comment ).insertBefore( lastElement );
 	}
 	
+	if (newComment) {
+		var commentElement = document.getElementsByClassName(id)[0];
+		commentElement.setAttribute("list-style-type", "comment");
+	}
+	else {
+		var commentElement = document.getElementsByClassName(id)[0];
+		commentElement.removeAttribute("list-style-type");
+	}
+	
 	httpRequest.open('POST', 'back_end_php.php', true);
 	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	httpRequest.send(data);
