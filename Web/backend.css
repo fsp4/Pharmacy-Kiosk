@@ -123,6 +123,7 @@ ul li, li2 {
 	-moz-border-radius: 30;
 	border-radius: 5px 5px 5px 5px;
 	list-style-type: none;
+	cursor: default;
 }
 
 
@@ -131,7 +132,9 @@ ul li, li2 {
 	font-family: Palatino Linotype;
 	color: #1c2856; 
 	font-size: 70%;
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
+	max-width: 100% !important;
 	height: 200px;
 }
 

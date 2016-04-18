@@ -177,7 +177,6 @@ function updateRows(httpRequest) {
 			var data = httpRequest.responseText;
 			var newData = JSON.parse(data);
 			var rettype = newData.Type;
-			console.log(rettype);
 			if (rettype == "Update") {
 				pickupQueueCount = 0;
 				dropoffQueueCount = 0;
@@ -191,7 +190,6 @@ function updateRows(httpRequest) {
 				var pickupArchiveRows = newData.pickupArchiveContents;
 				var dropoffArchiveRows = newData.dropoffArchiveContents;
 				var talkArchiveRows = newData.talkArchiveContents;
-				console.log("updating");
 
 				if (pickupRows != "OK") {
 					for (var i = 0; i < pickupRows.length; i++) {
@@ -329,6 +327,29 @@ function removeRowFromTable(id, type) {
 	return ret;
 }
 
+function getArchiveRowFromTable(id, type) {
+	var name;
+	var ret = 0;
+	
+	if (type == "pickup") {
+		name = pickupArchiveQueue;
+	}
+	else if (type == "dropoff") {
+		name = dropoffArchiveQueue;
+	}
+	else {
+		name = talkArchiveQueue;
+	}
+	
+	for (var i = 0; i < name.length; i++) {
+		if (name[i].id == id) {
+			ret = name[i];
+			break;
+		}
+	}
+	return ret;
+}
+
 function showQueueTable() {
 	// remove old queue items
 	$('ul#pickupTable>').remove();
@@ -412,7 +433,6 @@ function addRow(pageType, id, type, refill, first_name, last_name, middle, date_
 	li.setAttribute("type", labelType);
 	li.className = id;
 	if (comment) {
-		console.log(comment);
 		li.setAttribute("list-style-type", "comment");
 	}
 	
@@ -477,7 +497,6 @@ function refreshPage() {
 		archive_rows = 0;
 	}
 	var data = 'type=' + type + '&rows=' + rows + '&archive_rows=' + archive_rows;
-	console.log(data);
 	httpRequest.open('POST', 'back_end_php.php', true);
 	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	httpRequest.onreadystatechange = function() { updateRows(httpRequest); } ;
@@ -549,13 +568,8 @@ $(function() {
 			next(draggableId, table);
 			$(ui.draggable).remove()
 		}
-		
 	});
 });
-
-//$( "#ui-state-default" ).click(function() {
-//	console.log("test");
-//});
 
 function next(dropId, table) {
 	var httpRequest;
@@ -580,23 +594,43 @@ function next(dropId, table) {
 	if (!httpRequest) {
 		alert('Cannot create an XMLHTTP instance');
 	}
-	if(table.includes('pickup')){
-		var item = removeRowFromTable(dropId, "pickup");
-		displayData(item);
-		var data = 'type=pickup' + '&id=' + dropId;
+	
+	if (table.includes('2')) {
+		if (table.includes('pickup')) {
+			var item = getArchiveRowFromTable(dropId, "pickup");
+			displayData(item);
+			var data = 'type=pickup' + '&id=' + dropId;
+		}
+		if (table.includes('dropoff')) {
+			var item = getArchiveRowFromTable(dropId, "dropoff");
+			displayData(item);
+			var data = 'type=dropoff' + '&id=' + dropId;
+		}
+		if (table.includes('talk')) {
+			var item = getArchiveRowFromTable(dropId, "talk");
+			displayData(item);
+			var data = 'type=talk' + '&id=' + dropId;
+		}
 	}
-	if(table.includes('dropoff')){
-		var item = removeRowFromTable(dropId, "dropoff");
-		displayData(item);
-		var data = 'type=dropoff' + '&id=' + dropId;
+	else {
+		if (table.includes('pickup')) {
+			var item = removeRowFromTable(dropId, "pickup");
+			displayData(item);
+			var data = 'type=pickup' + '&id=' + dropId;
+		}
+		if (table.includes('dropoff')) {
+			var item = removeRowFromTable(dropId, "dropoff");
+			displayData(item);
+			var data = 'type=dropoff' + '&id=' + dropId;
+		}
+		if (table.includes('talk')) {
+			var item = removeRowFromTable(dropId, "talk");
+			displayData(item);
+			var data = 'type=talk' + '&id=' + dropId;
+		}
+		
+		httpRequest.open('POST', 'back_end_php.php', true);
+		httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		httpRequest.send(data);
 	}
-	if(table.includes('talk')){
-		var item = removeRowFromTable(dropId, "talk");
-		displayData(item);
-		var data = 'type=talk' + '&id=' + dropId;
-	}
-	// comment this out to disable database connection for easier testing
-	httpRequest.open('POST', 'back_end_php.php', true);
-	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	httpRequest.send(data);
 }
