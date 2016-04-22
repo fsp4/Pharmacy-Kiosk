@@ -1,12 +1,18 @@
+// create new arrays to hold each type of queue
 var pickupQueue = new Array(), dropoffQueue = new Array(), talkQueue = new Array();
 var pickupArchiveQueue = new Array(), dropoffArchiveQueue = new Array(), talkArchiveQueue = new Array();
+// set initial queue counts to 0
 var pickupQueueCount = 0, dropoffQueueCount = 0, talkQueueCount = 0, tabsCount = 0;
 var pickupArchiveQueueCount = 0, dropoffArchiveQueueCount = 0, talkArchiveQueueCount = 0;
-var t;
 
+// Remove item from queue, open in tab, and move item from queue table to queue_archive table
+// @param int type
+//		  2,3, or 4 = from html buttons on page
+//		  These coorespond to the else statement in back_end_php.php
 function nextItem(type) {
 	var httpRequest;
-
+	
+	// XMLHttpRequest checking
 	if (window.XMLHttpRequest) { // Mozilla, Safari, ...
 		httpRequest = new XMLHttpRequest();
 		if (httpRequest.overrideMimeType) {
@@ -28,6 +34,7 @@ function nextItem(type) {
 		alert('Cannot create an XMLHTTP instance');
 	}
 	
+	// check which queue to remove from
 	var name;
 	if (type == 2) {
 		name = "pickup";
@@ -38,10 +45,13 @@ function nextItem(type) {
 	else {
 		name = "talk";
 	}
+	
 	var T = document.getElementById(name + "Table");
+	// id stored in class attribute
 	var id = T.getElementsByTagName("li")[0].className;
-	var item = removeRowFromTable(id, name);
+	var item = removeRowFromList(id, name);
 	displayData(item);
+	// remove item from list on page
 	jQuery("#" + name + "Table li:first-child").remove();
 
 	var data = 'type=' + type + '&id=' + id;
@@ -171,13 +181,19 @@ function displayData(item) {
 	$( "div#tabs" ).tabs( "option", "active", tabsCount - 1);
 }
 
+// function called on return from refreshPage function
+// 
 function updateRows(httpRequest) {
 	if (httpRequest.readyState == 4) {
 		if (httpRequest.status == 200) {
+			// get and parge JSON data from back_end_php.php
 			var data = httpRequest.responseText;
 			var newData = JSON.parse(data);
+			
+			// if rettype == "Update" then reload all queues
 			var rettype = newData.Type;
 			if (rettype == "Update") {
+				// reset all queue counts
 				pickupQueueCount = 0;
 				dropoffQueueCount = 0;
 				talkQueueCount = 0;
@@ -190,7 +206,8 @@ function updateRows(httpRequest) {
 				var pickupArchiveRows = newData.pickupArchiveContents;
 				var dropoffArchiveRows = newData.dropoffArchiveContents;
 				var talkArchiveRows = newData.talkArchiveContents;
-
+				
+				// add each item to an array
 				if (pickupRows != "OK") {
 					for (var i = 0; i < pickupRows.length; i++) {
 						var theRow = pickupRows[i];
@@ -227,7 +244,7 @@ function updateRows(httpRequest) {
 						addRowToArchiveList(theRow.id, theRow.type, theRow.refill, theRow.first_name, theRow.last_name, theRow.middle, theRow.date_of_birth, theRow.gender, theRow.position, theRow.home_address, theRow.city, theRow.state, theRow.zip, theRow.phone, theRow.phone_type, theRow.notifications, theRow.allergies_list, theRow.current_meds, theRow.signature, theRow.date, theRow.relation, theRow.returning_customer, theRow.insurance_card_number, theRow.allergies, theRow.comment);
 					}
 				}
-			
+				
 				showQueueTable();
 			}
 			else if (rettype == "NEW") {
@@ -240,7 +257,9 @@ function updateRows(httpRequest) {
 	}
 }
 
-function Queue(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, comment) {
+// Object for each item in queue
+// Note: many of these variables are not displayed and therefore currently unused
+function Item(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, comment) {
 	this.id = id;
 	this.type = type;
 	this.refill = refill;
@@ -268,8 +287,10 @@ function Queue(id, type, refill, first_name, last_name, middle, date_of_birth, g
 	this.comment = comment;
 }
 
+// creates new object for the argument data and adds to cooresponding queue array
 function addRowToList(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, comment) {
-	var currItem = new Queue(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, comment);		
+	var currItem = new Item(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, comment);		
+	
 	if (type == "pickup") {
 		pickupQueue[pickupQueueCount] = currItem;
 		pickupQueueCount++;
@@ -284,8 +305,10 @@ function addRowToList(id, type, refill, first_name, last_name, middle, date_of_b
 	}
 }
 
+// creates new object for the argument data and adds to cooresponding queue_archive array
 function addRowToArchiveList(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, comment) {
-	var currItem = new Queue(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, comment);		
+	var currItem = new Item(id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, comment);		
+	
 	if (type == "pickup") {
 		pickupArchiveQueue[pickupArchiveQueueCount] = currItem;
 		pickupArchiveQueueCount++;
@@ -300,7 +323,8 @@ function addRowToArchiveList(id, type, refill, first_name, last_name, middle, da
 	}
 }
 
-function removeRowFromTable(id, type) {
+// removes item given by argument from its array then returns it
+function removeRowFromList(id, type) {
 	var name;
 	var ret = 0;
 	
@@ -327,7 +351,8 @@ function removeRowFromTable(id, type) {
 	return ret;
 }
 
-function getArchiveRowFromTable(id, type) {
+// removes item given by argument from its archive_array then returns it
+function getArchiveRowFromList(id, type) {
 	var name;
 	var ret = 0;
 	
@@ -350,6 +375,7 @@ function getArchiveRowFromTable(id, type) {
 	return ret;
 }
 
+// displays queue on page
 function showQueueTable() {
 	// remove old queue items
 	$('ul#pickupTable>').remove();
@@ -359,6 +385,7 @@ function showQueueTable() {
 	$('ul#dropoffTable2>').remove();
 	$('ul#talkTable2>').remove();
 	
+	// add each item from each queue onto page
 	for (var i = 0; i < pickupQueueCount; i++) {
 		addRow(0, pickupQueue[i].id, pickupQueue[i].type, pickupQueue[i].refill, pickupQueue[i].first_name, pickupQueue[i].last_name, pickupQueue[i].middle, 
 			   pickupQueue[i].date_of_birth, pickupQueue[i].gender, pickupQueue[i].position, pickupQueue[i].home_address, pickupQueue[i].city, pickupQueue[i].state, 
@@ -402,18 +429,20 @@ function showQueueTable() {
 function addRow(pageType, id, type, refill, first_name, last_name, middle, date_of_birth, gender, position, home_address, city, state, zip, phone, 
 				phone_type, notifications, allergies_list, current_meds, signature, date, relation, returning_customer, insurance_card_number, allergies, comment) {
 	var labelType = 0;
+	
+	// get elements for new queues from page
 	if (pageType == 0) {
 		if (type == 'pickup') {
 			var T = document.getElementById("pickupTable");
 		}
 		else if (type == 'returningdropoff' || type == 'newdropoff'){
 			var T = document.getElementById("dropoffTable");
-
 		}
 		else {
 			var T = document.getElementById("talkTable");
 		}
 	}
+	// get elements for archive queues from page
 	else {
 		labelType = 1;
 		if (type == 'pickup') {
@@ -421,13 +450,13 @@ function addRow(pageType, id, type, refill, first_name, last_name, middle, date_
 		}
 		else if (type == 'returningdropoff' || type == 'newdropoff'){
 			var T = document.getElementById("dropoffTable2");
-
 		}
 		else {
 			var T = document.getElementById("talkTable2");
 		}
 	}
 	
+	// create new li element for current item given by argument data
 	var li = document.createElement("li");
 	li.id = "ui-state-default";
 	li.setAttribute("type", labelType);
@@ -436,6 +465,7 @@ function addRow(pageType, id, type, refill, first_name, last_name, middle, date_
 		li.setAttribute("list-style-type", "comment");
 	}
 	
+	// append new element to page
 	if (type == 'pickup') {
 		li.appendChild(document.createTextNode(last_name));
 		T.appendChild(li);
@@ -456,9 +486,12 @@ function addRow(pageType, id, type, refill, first_name, last_name, middle, date_
 	}
 }
 
+// function called on page load and again every 5 seconds
+// Counts number of items in each queue and sends them to back_end_php.php then calls updateRows function
 function refreshPage() {
 	var httpRequest;
 
+	// XMLHttpRequest checking
 	if (window.XMLHttpRequest) { // Mozilla, Safari, ...
 		httpRequest = new XMLHttpRequest();
 		if (httpRequest.overrideMimeType) {
@@ -492,10 +525,12 @@ function refreshPage() {
 	if (rows == -1) {
 		rows = 0;
 	}
+	
 	var archive_rows = pickupArchiveCount + dropoffArchiveCount + talkArchiveCount;
 	if (archive_rows == -1) {
 		archive_rows = 0;
 	}
+	
 	var data = 'type=' + type + '&rows=' + rows + '&archive_rows=' + archive_rows;
 	httpRequest.open('POST', 'back_end_php.php', true);
 	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -597,40 +632,37 @@ function next(dropId, table) {
 	
 	if (table.includes('2')) {
 		if (table.includes('pickup')) {
-			var item = getArchiveRowFromTable(dropId, "pickup");
-			displayData(item);
+			var item = getArchiveRowFromList(dropId, "pickup");
 			var data = 'type=pickup' + '&id=' + dropId;
 		}
 		if (table.includes('dropoff')) {
-			var item = getArchiveRowFromTable(dropId, "dropoff");
-			displayData(item);
+			var item = getArchiveRowFromList(dropId, "dropoff");
 			var data = 'type=dropoff' + '&id=' + dropId;
 		}
 		if (table.includes('talk')) {
-			var item = getArchiveRowFromTable(dropId, "talk");
-			displayData(item);
-			var data = 'type=talk' + '&id=' + dropId;
-		}
-	}
-	else {
-		if (table.includes('pickup')) {
-			var item = removeRowFromTable(dropId, "pickup");
-			displayData(item);
-			var data = 'type=pickup' + '&id=' + dropId;
-		}
-		if (table.includes('dropoff')) {
-			var item = removeRowFromTable(dropId, "dropoff");
-			displayData(item);
-			var data = 'type=dropoff' + '&id=' + dropId;
-		}
-		if (table.includes('talk')) {
-			var item = removeRowFromTable(dropId, "talk");
-			displayData(item);
+			var item = getArchiveRowFromList(dropId, "talk");
 			var data = 'type=talk' + '&id=' + dropId;
 		}
 		
-		httpRequest.open('POST', 'back_end_php.php', true);
-		httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		httpRequest.send(data);
+		var data = 'type=1&rows=0&archive_rows=0';
 	}
+	else {
+		if (table.includes('pickup')) {
+			var item = removeRowFromList(dropId, "pickup");
+			var data = 'type=2' + '&id=' + dropId;
+		}
+		if (table.includes('dropoff')) {
+			var item = removeRowFromList(dropId, "dropoff");
+			var data = 'type=3' + '&id=' + dropId;
+		}
+		if (table.includes('talk')) {
+			var item = removeRowFromList(dropId, "talk");
+			var data = 'type=4' + '&id=' + dropId;
+		}
+	}
+	
+	displayData(item);
+	httpRequest.open('POST', 'back_end_php.php', true);
+	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	httpRequest.send(data);
 }
