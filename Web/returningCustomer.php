@@ -77,7 +77,7 @@
 				
 				<div id="section">
 					<button type="submit" class="btnTypeTwo">SUBMIT</button>
-        			<button onclick="location.href='dropoff.php'" class="btnTypeTwo">BACK</button>
+        			<button type="button" onclick="location.href='dropoff.php'" class="btnTypeTwo">BACK</button>
         		</div>
         		<input type="hidden" name="type" value="returningdropoff">
     		</fieldset>
