@@ -61,6 +61,7 @@ function nextItem(type) {
 	httpRequest.send(data);
 }
 
+// adds comment to database and displays on page
 function addComment(id) {
 	var httpRequest;
 	
@@ -116,7 +117,10 @@ function addComment(id) {
 	httpRequest.send(data);
 }
 
+// function called when opening new tab
+// creates new tab and adds paramenters data
 function displayData(item) {
+	// get info from item object
 	var id = item.id;
 	var type = item.type;
 	var first_name = item.first_name;
@@ -137,6 +141,7 @@ function displayData(item) {
 		comment = "<p id=\"comment" + id + "\"><b>Comment: </b>" + comment + "</p>";
 	}
 	
+	// creates and adds new elements to new tab
 	var num_tabs = $("div#tabs ul li").length + 1;
 	$("div#tabs ul").append(
 		"<li><a href='#" + id + "'>" + last_name + "</a><span class=\"ui-icon ui-icon-close\"></span></li>"
@@ -182,7 +187,7 @@ function displayData(item) {
 }
 
 // function called on return from refreshPage function
-// 
+// parses database data returned from server and displays on page
 function updateRows(httpRequest) {
 	if (httpRequest.readyState == 4) {
 		if (httpRequest.status == 200) {
@@ -200,6 +205,7 @@ function updateRows(httpRequest) {
 				pickupArchiveQueueCount = 0;
 				dropoffArchiveQueueCount = 0;
 				talkArchiveQueueCount = 0;
+				
 				var pickupRows = newData.pickupContents;
 				var dropoffRows = newData.dropoffContents;
 				var talkRows = newData.talkContents;
@@ -563,6 +569,7 @@ $(function() {
 	});
  });
 
+// set queues to be sortable
 $(function() {
 	$( "#pickupTable" ).sortable({
 		revert: true
@@ -585,6 +592,7 @@ $(function() {
 		$( "ul, li" ).disableSelection();
 	});
 
+// set queues to be dragable
 $(function() {
 	$( "#pickupTable" ).draggable({revert: true});
 	$( "#dropoffTable" ).draggable({revert: true});
@@ -594,6 +602,7 @@ $(function() {
 	$( "#talkTable2" ).draggable({revert: true});
 });  
  
+// creates new tab when dragged
 $(function() {
 	$( "#tabs" ).droppable({
 		activeClass: "ui-state-highlight",
@@ -606,6 +615,7 @@ $(function() {
 	});
 });
 
+// called when item is dragged from queue
 function next(dropId, table) {
 	var httpRequest;
 
@@ -630,6 +640,7 @@ function next(dropId, table) {
 		alert('Cannot create an XMLHTTP instance');
 	}
 	
+	// if item dragged from archive queue
 	if (table.includes('2')) {
 		if (table.includes('pickup')) {
 			var item = getArchiveRowFromList(dropId, "pickup");
@@ -646,6 +657,7 @@ function next(dropId, table) {
 		
 		var data = 'type=1&rows=0&archive_rows=0';
 	}
+	// if item dragged from queue
 	else {
 		if (table.includes('pickup')) {
 			var item = removeRowFromList(dropId, "pickup");
@@ -661,6 +673,7 @@ function next(dropId, table) {
 		}
 	}
 	
+	// remove item to queue and add to queue archive in database
 	displayData(item);
 	httpRequest.open('POST', 'back_end_php.php', true);
 	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
