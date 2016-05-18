@@ -10,7 +10,7 @@ html {
 	font-family: sans-serif;
 	-webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
-    height: 100%;
+	overflow-y: scroll;
 }
 
 body {
@@ -19,8 +19,8 @@ body {
     background-size: cover;
     -o-background-size: cover;
     margin: auto;
-    text-align:center;
-    height: 100%;
+    text-align: center;
+	height: 100%;
 }
 
 p {
@@ -29,7 +29,9 @@ p {
 }
 
 img {
-	width:100%;
+	width: 60%;
+	max-width: 100%;
+    height: auto;
 }
 
 div {
@@ -44,16 +46,8 @@ fieldset {
 	border-radius: 25px;
 }
 
-.pure-control-group{
-	font-family: Palatino Linotype;
-}
-
-#checkbox{
-	display: inline;
-}
-
 div legend {
-	color: #1c2856;
+	color: #002A5E;
 	font-size:140%;
 	font-family: Palatino Linotype;
 } 
@@ -64,6 +58,33 @@ div p {
 
 ul {
 	list-style-type:none;
+}
+
+header p {
+	text-align: center;
+    margin: 0;
+    padding: 20px 0;
+    padding-bottom: 85px;
+}
+
+footer p {
+	position: fixed;
+	text-align: center;
+    margin: 0;
+    color: #002A5E;
+	font-family: Palatino Linotype;
+    bottom: 0;
+	width: 100%;
+}
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+#checkbox {
+	display: inline;
 }
 
 #id {
@@ -80,7 +101,7 @@ ul {
 
 #thanks{
 	font-family: Palatino Linotype;
-	color: #1c2856;
+	color: #002A5E;
 	font-size: 200%;
 }
 
@@ -88,7 +109,7 @@ ul {
 	font-family: Palatino Linotype;
 	width: 80%;
 	height: auto;
-	margin:auto;
+	margin: auto;
 	text-align: left;
 }
 
@@ -96,18 +117,35 @@ ul {
 	display: inline-block;
 }
 
-
-header p {
-	text-align: center;
-    margin: 0;
-    padding: 20px 0;
-    padding-bottom: 85px;
+#section {
+	padding-top: 5px;
 }
 
-footer p {
-	text-align: center;
-    margin: 0;
-    color: #003399;
+#open:hover {
+	cursor: pointer;
+}
+
+#tooltip {
+    position: absolute;
+    display: none;
+    border: 1px solid #999;
+    background-color: #ccc;
+    padding: 5px;
+}
+
+.stackingBtns {
+	display: inline;
+}
+
+.ui-tooltip {
+    max-height: 20px !important;
+	position: absolute !important;
+	background: white !important;
+	font-size: 16px !important;
+	font-family: Palatino Linotype !important;
+}
+
+.pure-control-group{
 	font-family: Palatino Linotype;
 }
 
@@ -117,7 +155,7 @@ footer p {
     font-family: Palatino Linotype;   
 }
 
-/* Button CSS */
+/* For main menu buttons */
 .btn {
 	-webkit-border-radius: 30;
 	-moz-border-radius: 30;
@@ -125,7 +163,7 @@ footer p {
 	font-family: Palatino Linotype;
 	color: #ffffff;
 	font-size: 30px;
-	background: #003399;
+	background: #002A5E;
 	padding: 10px 20px 10px 20px;
 	width: 200px;
 	height: 70px;
@@ -137,7 +175,7 @@ footer p {
 }
 
 .btn:hover {
-	background: #cfc04b;
+	background: #CDB77C;
 	text-decoration: none;
 }
 
@@ -145,21 +183,23 @@ footer p {
 	outline:0;
 }
 
+/* For pickup/dropoff form Submit and Back buttons */
 .btnTypeTwo {
 	-webkit-border-radius: 30;
 	-moz-border-radius: 30;
 	border-radius: 30px;
 	font-family: Arial;
-	color: #ffffff; 
+	color: #ffffff;
 	font-size: 16px;
-	background: #1c2856;
+	background: #002A5E;
 	padding: 10px 20px 10px 20px;
-	width: 100px;
 	border: solid #ffffff 0px;
 	text-decoration: none;
+	width: 100px;
 	position: relative;
 	vertical-align: top;
 	display: inline-block;
+	text-align: center;
 }
 
 .btnTypeTwo:hover {
@@ -171,6 +211,7 @@ footer p {
 	outline:0;
 }
 
+/* For FAQ buttons */
 .btnTypeThree {
 	-webkit-border-radius: 30;
 	-moz-border-radius: 30;
@@ -178,7 +219,7 @@ footer p {
 	font-family: Arial;
 	color: #ffffff; 
 	font-size: 16px;
-	background: #1c2856;
+	background: #002A5E;
 	padding: 10px 20px 10px 20px;
 	width: 150px;
 	height: 60px;
@@ -195,5 +236,32 @@ footer p {
 }
 
 .btnTypeThree:focus {
+	outline:0;
+}
+
+/* For FAQ dialog buttons */
+.btnTypeFour{
+	-webkit-border-radius: 30;
+	-moz-border-radius: 30;
+	border-radius: 30px;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 16px;
+	background: #002A5E;
+	padding: 10px 20px 10px 20px;
+	border: solid #ffffff 0px;
+	text-decoration: none;
+	position: relative;
+	vertical-align: top;
+	display: inline-block;
+	text-align: center;
+}
+
+.btnTypeFour:hover {
+	background: #cdb77c;
+	text-decoration: none;
+}
+
+.btnTypeFour:focus {
 	outline:0;
 }

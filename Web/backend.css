@@ -43,25 +43,23 @@ img {
     padding: 0px; 
     background: none; 
     border-width: 0px; 
+	height: 300px;
+	font-family: Palatino Linotype;
+	text-align: left;
 } 
 
 #tabs .ui-tabs-nav { 
     padding-left: 0px; 
     background: transparent; 
-    border-width: 0px 0px 1px 0px; 
+    border-width: 0px 0px 0px 0px; 
     -moz-border-radius: 0px; 
     -webkit-border-radius: 0px; 
-    border-radius: 0px; 
-}
- 
-#tabs .ui-tabs-panel { 
-    background: linear-gradient(#cdb77c, #e6dbbe);
-    border-width: 0px 1px 1px 1px; 
+    border-radius: 0px;
 }
 
 #tabs .ui-tabs-nav li { 
     float: left; 
-	background: #cdb77c;
+	background: #e6dbbe;
 	font-size: 70%;
 	font-weight: bold;
 	font-family: Palatino Linotype;
@@ -70,19 +68,29 @@ img {
     border-radius: 0px; 
 }
 
-#tabs {
-	font-family: Palatino Linotype;
-	text-align: left;
+#tabs .ui-tabs-panel { 
+    background: #e6dbbe;
+    border-width: 1px 1px 1px 1px;
+	word-wrap: break-word;
+	border-style: outset;
+	border-color: #002A5E;
+}
+
+#tabs .ui-tabs-active { 
+    background: #e6dbbe;
+    border-width: 1px 1px 0px 1px;
+	word-wrap: break-word;
+	border-style: outset;
+	border-color: #002A5E;
 }
 
 label {
 	font-family: Palatino Linotype;
-	color: #1c2856;
+	color: #002A5E;
 	font-weight: bold;
 }
 
-#header,
-#footer {
+#header, #footer {
 	min-height: 40px;
 }
 	
@@ -99,21 +107,14 @@ label {
 #content-wrap {
 	display: inline-block;
 	width: 60%;
-} 
+}
 
 #right-sidebar {
 	float: right;
 	width: 20%;
-} 
-
-#pickupTable, #dropoffTable, #talkTable { 
-	list-style-type: none; 
-	margin: auto; 
-	padding: 0; 
-	width: 60%; 
 }
 
-ul li, li2 {
+.queueItem {
 	background: #e6dbbe;
     margin: 0 5px 5px 5px;
     padding: 5px;
@@ -122,25 +123,79 @@ ul li, li2 {
     -webkit-border-radius: 30;
 	-moz-border-radius: 30;
 	border-radius: 5px 5px 5px 5px;
-	list-style-type: none;
 	cursor: default;
+	width: 90%;
+	border: solid #ffffff 0px;
 }
 
+.queueItem:hover {
+	background: #e2d6b6;
+}
+
+.queueItem:active {
+	background: #d3c292;
+}
+
+.queueItem:focus {
+	outline:0;
+}
+
+.queueItemComment {
+	background: #e6bec9;
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.2em;
+    text-align: center;
+    -webkit-border-radius: 30;
+	-moz-border-radius: 30;
+	border-radius: 5px 5px 5px 5px;
+	cursor: default;
+	width: 90%;
+	border: solid #ffffff 0px;
+}
+
+.queueItemComment:hover {
+	background: #e2b6c2;
+}
+
+.queueItemComment:active {
+	background: #d491a3;
+}
+
+.queueItemComment:focus {
+	outline:0;
+}
 
 #pickupTable, #dropoffTable, #pickupTable2, #dropoffTable2, #talkTable, #talkTable2 {
-	width: 100%;
+	width: 60%;
 	font-family: Palatino Linotype;
-	color: #1c2856; 
+	color: #002A5E; 
 	font-size: 70%;
 	overflow-y: auto;
 	overflow-x: hidden;
-	max-width: 100% !important;
+	max-width: 60% !important;
 	height: 200px;
+	list-style-type: none; 
+	margin: auto; 
+	padding: 0; 
 }
 
-[list-style-type="comment"] {
-	background: #e6bec9;
+.commentarea {
+	margin-bottom: 2px;
+	resize: none;
+	outline: 0;
 }
+
+.commentareabutton {
+	font-family: Palatino Linotype;
+}
+
+.commentDiv {
+	display: inline-block;
+}
+
+/* fix for firefox close icon bug */
+#tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
 
 /* Button CSS */
 .btn {
@@ -150,13 +205,12 @@ ul li, li2 {
 	font-family: Palatino Linotype;
 	color: #ffffff; 
 	font-size: 14px;
-	background: #1c2856;
+	background: #002A5E;
 	padding: 10px 20px 10px 20px;
 	border: solid #ffffff 0px;
 	text-decoration: none;
 	text-align: center;
 	display: inline-block;
-
 }
 
 .btn:hover {

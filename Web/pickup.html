@@ -5,8 +5,9 @@
 	<title>Pick Up</title>
 	<link rel="stylesheet" type="text/css" href="menu.css"/>
 	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+	<link rel="icon" type="image/ico" href="favicon.ico?">
 	<script>
-		//only disabling date of birth. assume names still needed.
+		// only disabling date of birth. assume names still needed.
 		function disableFields(cb) {
 			document.getElementById("dob").disabled = cb.checked ? true : false;
 		}
@@ -14,17 +15,28 @@
 </head>
 <body>
 	<header>
-		<p><img src="pitt_logo.png"></p>
+		<p><img src="university-of-pittsburgh-logo-long.svg"></p>
 	</header>
 	<div id="box">
 		<legend><b> PICK UP FORM </b></legend>
 		<form class="pure-form pure-form-aligned" method="POST" action="submit.php" onsubmit="return validateForm()">
 			<fieldset>
 				<div class="pure-control-group">
-					<label id="checkbox" class="pure-checkbox">
-						<input id="cb" onchange = "disableFields(this)" type="checkbox" name="returningcustomer" > 
-							Returning customer to this store
-					</label>
+					<p>
+						<label id="checkbox" class="pure-checkbox">
+							<input id="cb" onchange = "disableFields(this)" type="checkbox" name="returningcustomer" > 
+								Returning customer to this store
+						</label>
+					</p>
+					<p>
+						<span>Relationship to Patient</span>
+							<select id="relation" class="pure-input-1-2" name="relationship">
+								<option>Self</option>
+								<option>Relative</option>
+								<option>Friend</option>
+								<option>Other</option>
+							</select>
+					</p>
 					<p>
 						<label for="FirstName">First Name</label>
 						<input id="FirstName" type="text" placeholder="First Name" name="firstname" required>

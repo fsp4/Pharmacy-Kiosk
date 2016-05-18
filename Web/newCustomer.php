@@ -6,17 +6,21 @@
 	<link rel="stylesheet" type="text/css" href="menu.css"/>
 	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
   	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="icon" type="image/ico" href="favicon.ico?">
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script>
-		function goBack() {
-   			window.history.back();
-		}
+	// adds tooltip to allergies field
+	$(function() {
+		$( "#allergies" ).tooltip({
+			position: { my: "left+5center", at: "right center" }
+		});
+	});
 	</script>
 </head>
 <body>
 	<header>
-		<p><img src="pitt_logo.png"></p>
+		<p><img src="university-of-pittsburgh-logo-long.svg"></p>
 	</header>
 	<div id="box">
 		<legend><b> DROP OFF FORM </b></legend>
@@ -44,13 +48,13 @@
 						<input id="dob" type="date" placeholder="DOB" name="DOB" required>
 					</p>
 					<p>
-						<input type="radio" name="gender" value="male"> Male
- 		 				<input type="radio" name="gender" value="female"> Female
+						<input type="radio" name="gender" value="male" required> Male
+ 		 				<input type="radio" name="gender" value="female" required> Female
 					</p>
 					<p>
-						<input type="radio" name="position" value="student"> Student
- 		 				<input type="radio" name="position" value="faculty"> Faculty
- 		 				<input type="radio" name="position" value="athlete"> Athlete
+						<input type="radio" name="position" value="student" required> Student
+ 		 				<input type="radio" name="position" value="faculty" required> Faculty
+ 		 				<input type="radio" name="position" value="athlete" required> Athlete
 					</p>
 					<p>
 						<label for="homeAddress">Home Address</label>
@@ -59,41 +63,45 @@
 					<p id="address">
 						<input id="city" type="text" placeholder="City" name="city" required>
 						<input id="state" type="text" maxlength="2" size="5" placeholder="State" name="state" required>
-						<input id="zip" type="text" maxlength="5" size="5" name="zip" placeholder="Zip" required>
+						<input id="zip" type="number" maxlength="5" size="5" name="zip" placeholder="Zip" required>
 					</p>
 					<p>
 						<label for="phone">Phone Number</label>
-						<input id="phone" type="number" size="10" placeholder="Phone Number" name="phone" required><br>
-						<input type="radio" name="phone_type" value="mobile"> Mobile
- 		 				<input type="radio" name="phone_type" value="home"> Home
- 		 				<input type="radio" name="phone_type" value="work"> Work
+						<input id="phone" type="text" placeholder="Phone Number" name="phone" required><br>
+						<input type="radio" name="phone_type" value="mobile" required> Mobile
+ 		 				<input type="radio" name="phone_type" value="home" required> Home
+ 		 				<input type="radio" name="phone_type" value="work" required> Work
 
 					</p>
 					<p>
 						I would like to receive pharmacy notifications via <br>
-						<input type="radio" name="notifications" value="text"> Text
- 		 				<input type="radio" name="notifications" value="voice"> Voice
+						<input type="radio" name="notifications" value="text" required> Text
+ 		 				<input type="radio" name="notifications" value="voice" required> Voice
 					</p>
 					<p>
 						<label for="allergies">Medication Allergies</label>
-						<input id="allergies" type="text" name="allergies_list"><br>
+						<input id="allergies" type="text" name="allergies_list" title="Please also describe the reaction.">
+					</p>
+					<p>
 						<label for="med">Current Medications</label>
 						<input id="med" type="text" name="current_meds">
 					</p>
 					<p>
 						<label for="sign">Signature</label>
-						<input id="sign" type="text" name="signature" required><br>
+						<input id="sign" type="text" name="signature" required>
+					</p>
+					<p>
 						<label for="date">Date</label>
-						<input id="date" type="date" name="date" required>
+						<input id="date" type="date" name="date" value="<?php print(date("Y-m-d")); ?>" required>
 					</p>
 				</div>
-				<div>
-					<button type="submit" class="btnTypeTwo">SUBMIT</button>
-        			<button onclick="goBack()" class="btnTypeTwo">BACK</button>
-        		</div>
-        		<input type="hidden" name="type" value="newdropoff">
-    		</fieldset>
-		</form>
+				<div class="stackingBtns">
+					<input type="hidden" name="type" value="newdropoff">
+					<button type="submit" class="btt">SUBMIT</button>
+				</form>
+					<button onclick="location.href='dropoff.html'" class="btt">BACK</button>
+				</div>
+		</fieldset>
 	</div>
 </body>
 </html>

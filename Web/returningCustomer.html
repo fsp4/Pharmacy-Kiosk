@@ -6,9 +6,11 @@
 	<link rel="stylesheet" type="text/css" href="menu.css"/>
 	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
   	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="icon" type="image/ico" href="favicon.ico?">
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script>
+		// jquery for dialog
   		$(function() {
     		$( "#dialog" ).dialog({
       		autoOpen: false,
@@ -26,18 +28,24 @@
       			$( "#dialog" ).dialog( "open" );
     		});
   		});
+		
+		// keep dialog centered if page is resized
+		$(window).resize(function() {
+			$("#dialog").dialog("option", "position", {my: "center", at: "center", of: window});
+		});
 	</script>
 </head>
 
 <body>
 	<header>
-		<p><img src="pitt_logo.png"></p>
+		<p><img src="university-of-pittsburgh-logo-long.svg"></p>
 	</header>
 	<div id="box">
 		<legend><b> DROP OFF FORM </b></legend>
 		<form class="pure-form pure-form-aligned" method="POST" action="submit.php">
 			<fieldset>
-				<div class="pure-control-group">				
+				<div class="pure-control-group">		
+					<p>				
 					<span>Relationship to Patient</span>
 						<select id="relation" class="pure-input-1-2" name="relationship">
 							<option>Self</option>
@@ -45,6 +53,7 @@
 							<option>Friend</option>
 							<option>Other</option>
 						</select>
+					</p>
 					<p>
 						<label for="FirstName">First Name</label>
 						<input id="FirstName" type="text" placeholder="First Name" name="firstname" required>
@@ -57,11 +66,12 @@
 						<label for="dob">Date of Birth</label>
 						<input id="dob" type="date" placeholder="DOB" name="DOB" required>
 					</p>
-					<label id="checkbox" class="pure-checkbox">
-						<input type="checkbox" name="allergy" > 
-						Do you have any new allergies?
-					</label>	
-					<br>				
+					<p>
+						<label for="allergies">Any new allergies?</label>
+							<input type="radio" name="allergies" value="Yes" required> Yes
+							<input type="radio" name="allergies" value="No" required> No
+						</label>
+					</p>
 					<span id="open">
 						<u>Insurance card not present?</u>
 					</span>					
@@ -69,7 +79,7 @@
 				<div id="dialog" title="Insurance">
 					<p>
 						If you do not have your insurance card with you at the moment, you are still able to
-						purchase your medications, however the University strives to make this process as affordable as possbile
+						purchase your medications, however the University strives to make this process as affordable as possbile.
 						You can ask your parents or come up to the counter to ask the staff the best approach to retrieving the necessary
 						information from your insurance card.
 					</p>
@@ -77,7 +87,7 @@
 				
 				<div id="section">
 					<button type="submit" class="btnTypeTwo">SUBMIT</button>
-        			<button type="button" onclick="location.href='dropoff.php'" class="btnTypeTwo">BACK</button>
+        			<button type="button" onclick="location.href='dropoff.html'" class="btnTypeTwo">BACK</button>
         		</div>
         		<input type="hidden" name="type" value="returningdropoff">
     		</fieldset>

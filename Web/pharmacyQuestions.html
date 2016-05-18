@@ -5,9 +5,11 @@
 	<title>Pharmacy Questions</title>
 	<link rel="stylesheet" type="text/css" href="menu.css"/>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="icon" type="image/ico" href="favicon.ico?">
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script>
+		// jquery for accordion menu and 'talk to technician' dialog
 		$(function() {
     		$( "#accordion" ).accordion({
       			collapsible: true,
@@ -16,6 +18,7 @@
 				autoFill: false
     		});
   		});
+		
   		$(function() {
     		$( "#dialog" ).dialog({
       		autoOpen: false,
@@ -33,11 +36,46 @@
       			$( "#dialog" ).dialog( "open" );
     		});
   		});
+		
+		// keep dialog centered if page is resized
+		$(window).resize(function() {
+			$("#dialog").dialog("option", "position", {my: "center", at: "center", of: window});
+		});
+		
+		// Script currently assumes xml file as stored on server, and this file on server can be manipulated by the pharmacy.
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (xhttp.readyState == 4) {
+				if (xhttp.status == 200 || xhttp.status == 0) {
+					parseFAQ(xhttp);
+				}
+				else {
+					alert("XML specifications for FAQ not found.");
+				}
+			}
+		};
+		// assume faq.xml is file name with FAQ contents.
+		xhttp.open("GET", "faq.xml", true); 
+		xhttp.send();
+
+		function parseFAQ(xml) {
+			var x, y, i, xmlDoc, txt;
+			xmlDoc = xml.responseXML;
+			txt = "";
+			x = xmlDoc.getElementsByTagName('Question');
+			y = xmlDoc.getElementsByTagName('Answer');
+			//assume: lengths of x and y SHOULD logically be equivalent for question and answer format.
+			for (i = 0 ; i < x.length; i++) {
+				txt += "<b>" + x[i].childNodes[0].nodeValue + "<br></b>"
+						+ y[i].childNodes[0].nodeValue + "<br><br>";
+			}
+			document.getElementById("faq").innerHTML = txt;
+		}
 	</script>
 </head>
 <body>
 	<header>
-		<p><img src="pitt_logo.png"></p>
+		<p><img src="university-of-pittsburgh-logo-long.svg"></p>
 	</header>
 	<button onclick="location.href='main_menu.html'" class="btnTypeThree">HOME</button>
 	<button id="open" class="btnTypeThree">TALK TO TECHNICIAN</button>
@@ -54,7 +92,7 @@
 				</p>
 			</div>
 			<div id="section">
-				<button type="submit" class="btnTypeTwo">SUBMIT</button>
+				<button type="submit" class="btnTypeFour">SUBMIT</button>
 				<input type="hidden" name="type" value="talk">
 			</div>
   		</form>
@@ -110,37 +148,6 @@
 		<h3> Questions </h3>
 		<div>
 			<p id = "faq"></p>
-			<script>
-				//Script currently assumes xml file as stored on server, and this file on server can be manipulated by the pharmacy.
-				var xhttp = new XMLHttpRequest();
-				xhttp.onreadystatechange = function() {
-				    if (xhttp.readyState == 4) {
-				    	if (xhttp.status == 200 || xhttp.status == 0) {
-				        	parseFAQ(xhttp);
-						}
-						else {
-							alert("XML specifications for FAQ not found.");
-						}
-				    }
-				};
-				//assume faq.xml is file name with FAQ contents.
-				xhttp.open("GET", "faq.xml", true); 
-				xhttp.send();
-	
-				function parseFAQ(xml) {
-				    var x, y, i, xmlDoc, txt;
-				    xmlDoc = xml.responseXML;
-				    txt = "";
-				    x = xmlDoc.getElementsByTagName('Question');
-				    y = xmlDoc.getElementsByTagName('Answer');
-				    //assume: lengths of x and y SHOULD logically be equivalent for question and answer format.
-				    for (i = 0 ; i < x.length; i++) {
-		        		txt += "<b>" + x[i].childNodes[0].nodeValue + "<br></b>"
-		        				+ y[i].childNodes[0].nodeValue + "<br><br>";
-				    }
-				    document.getElementById("faq").innerHTML = txt;
-				}
-			</script>
 		</div>	
 	</div>
 </body>
